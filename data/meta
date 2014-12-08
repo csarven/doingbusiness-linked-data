@@ -15,116 +15,223 @@
 
 @prefix doingbusiness: <http://doingbusiness.270a.info/> .
 @prefix measure: <http://doingbusiness.270a.info/measure/> .
-@prefix dimension: <http://doingbusiness.270a.info/dimension/> .
-@prefix concept: <http://doingbusiness.270a.info/concept/> .
 @prefix doingbusiness-dataset: <http://doingbusiness.270a.info/dataset/> .
 @prefix doingbusiness-structure: <http://doingbusiness.270a.info/structure/> .
+@prefix dataset: <http://doingbusiness.270a.info/dataset/> .
+@prefix structure: <http://doingbusiness.270a.info/structure/> .
+@prefix component: <http://doingbusiness.270a.info/component/> .
+@prefix dimension: <http://doingbusiness.270a.info/dimension/> .
+@prefix concept: <http://doingbusiness.270a.info/concept/> .
+@prefix concept-indicator: <http://doingbusiness.270a .info/concept/indicator/> .
+@prefix code <http://doingbusiness.270a.info/code/> .
+@prefix code-indicator: <http://doingbusiness.270a.info/code/indicator/> .
+@prefix economy: <http://doingbuinsess.270a.info/code/economy/> .
 
-@prefix eodb-2005: <http://doingbusiness.270a.info/dataset/ease-of-doing-business/2005/> .
-@prefix eodb-2005-topics: <http://doingbusiness.270a.info/dataset/ease-of-doing-business/2005/topics> .
-@prefix starting-a-business-2005: <http://doingbusiness.270a.info/dataset/ease-of-doing-business/2005/topics/starting-a-business> .
+#
+# Starting a business dataset
+#
 
-#TODO - Add other years
-
-<http://renatostauffer.ch>
-    rdfs:label "Renato Stauffer"@en;
+dataset:starting-a-business
+	a qb:DataSet ;
+	qb:structure structure:starting-a-business ;
+    rdfs:label "Dooing Business - Starting a Business dataset"@en ;
+    foaf:page <http://www.doingbusiness.org/custom-query> ;
+    dcterms:issued "2014-12-04T00:00:00Z"^^xsd:dateTime ; 
+    dcterms:modified "2014-12-04T00:00:00Z"^^xsd:dateTime ;
+    dcterms:creator <http://renatostauffer.ch> ,
+                    <http://csarven.ca/#i> ;
+    dcterms:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
     .
 
-doingbusiness-structure:EODB2005
-	a qb:DataStructureDefinition ;
-	qb:component	[qb:dimension dimension:economy; qb:order 1] ;
-	qb:component	[qb:dimension dimension:refPeriod; qb:order 2] ;
-	qb:component	[qb:measure measure:distance-to-frontier qb:order 3] ;
-	qb:component	[qb:measure measure:rank  qb:order 4] ;
-	.
-
-dimension:economy
-    a rdf:Property, qb:DimensionProperty ;
-    skos:prefLabel "Economy"@en ;
-    rdfs:subPropertyOf sdmx-dimension:refArea ;
-    qb:concept sdmx-concept:refArea ;
+structure:starting-a-business
+    a qb:DataStructureDefinition ;
+        qb:component component:rank ;
+        qb:component component:dtf ;
+        qb:component component:procedures ;
+        qb:component component:days ;
+        qb:component component:cost-of-starting-a-business-in-percent-of-income-per-capita ;
+        qb:component component:paid-in-minimal-capital-in-percent-of-income-per-capita ;
+        qb:component component:refPeriod ;
+        qb:component component:economy ;
+        qb:component component:indicator-starting-a-business ;
     .
 
-dimension:refPeriod
-	a rdf:Property, qb:DimensionProperty ;
-    skos:prefLabel "reference period"@en ;
-    rdfs:subPropertyOf sdmx-dimension:refPeriod ;
-    rdfs:range interval:Interval ;
-    qb:concept sdmx-concept:refPeriod ;
+code-indicator:starting-a-business
+    a skos:Concept ;
+    skos:inScheme code:indicator ;
+    skos:topConceptOf code:indicator ;
+    skos:definition "The indicator 'Starting a Business' determines how easy it is to start a business in a certain economy."@en ;
     .
 
-measure:distance-to-frontier
-	a rdf:Property, qb:MeasureProperty ;
-	skos:prefLabel "Distance to frontier"@en ;
-	skos:notation "DTF" ;
-	rdfs:subPropertyOf sdmx-measure:obsValue ;
+code:indicator
+    a skos:ConceptScheme ;
+    skos:prefLabel "Indicator Concept Scheme"@en ;
+    skos:hasTopConcept code-indicator:starting-a-business ;
+    skos:hasTopConcept code-indicator:ease-of-doing-business ; #add all other indicators here
+    .
+
+component:indicator-starting-a-business
+    a qb:ComponentSpecification ;
+    qb:dimension code-indicator:starting-a-business ;
+    .
+
+component:economy
+    a qb:ComponentSpecification
+    qb:dimension sdmx-dimension:refArea ;
+    .
+
+component:refPeriod
+    a qb:ComponentSpecification
+    qb:dimension sdmx-dimension:refPeriod ;
+    .
+
+component:rank
+    a qb:ComponentSpecification ;
+    qb:measure measure:rank;
+    .
+
+component:dtf
+    a qb:ComponentSpecification ;
+    qb:measure measure:dtf ;
+    .
+
+component:procedures
+    a qb:ComponentSpecification ;
+    qb:measure measure:procedures ;
+    .
+
+component:days
+    a qb:ComponentSpecification ;
+    qb:measure measure:days ;
+    .
+
+component:cost-of-starting-a-business-in-percent-of-income-per-capita
+    a qb:ComponentSpecification ;
+    qb:measure measure:cost-of-starting-a-business-in-percent-of-income-per-capita ;
+    .
+
+component:paid-in-minimal-capital-in-percent-of-income-per-capita
+    a qb:ComponentSpecification ;
+    qb:measure measure:paid-in-minimal-capital-in-percent-of-income-per-capita ;
+    .
+
+memeasure:cost-of-starting-a-business-in-percent-of-income-per-capita
+    a qb:MeasureProperty ;
+    rdfs:label "Cost of starting a business in percent of income per capita"@en ;
     rdfs:range xsd:decimal ;
-    skos:definition "Definition goes here..."@en ;
     .
 
-measure:rank
-	a rdf:Property, qb:MeasureProperty;
-	skos:prefLabel "Rank"@en ;
-	rdfs:subPropertyOf sdmx-measure:obsValue ;
+memeasure:paid-in-minimal-capital-in-percent-of-income-per-capita
+    a qb:MeasureProperty ;
+    rdfs:label "Paid in min. capital in percent of income per capita"@en ;
+    rdfs:range xsd:decimal ;
+    .
+
+memeasure:procudures
+    a qb:MeasureProperty ;
+    rdfs:label "Procedures"@en ;
     rdfs:range xsd:integer ;
     .
 
-doingbusiness:dataset
-    rdfs:label "Doing Business datasets"@en ;
-    dcterms:hasPart doingbusiness-dataset:ease-of-doing-business ;
+measure:dtf
+    a qb:MeasureProperty ;
+    rdfs:label "Distance to Frontier"@en ;
+    rdfs:range xsd:decimal ;
     .
 
-<http://doingbusiness.270a.info/dataset/EODB2005>
+measure:rank
+    a qb:MeasureProperty ;
+    rdfs:label "Rank"@en ;
+    rdfs:range xsd:integer ;
+    .
+
+measure:days
+    a qb:MeasureProperty ;
+    rdfs:label "Days"@en ;
+    rdfs:range xsd:integer ;
+    .
+
+#
+# Ease of doing business dataset
+#
+
+dataset:ease-of-doing-business
     a qb:DataSet ;
-    qb:structure doingbusiness-structure:EODB2005 ;
-    rdfs:label "Ease of Doing Business 2005"@en ;
-    dcterms:isPartOf doingbusiness-dataset:ease-of-doing-business ;
-    dcterms:hasPart eodb-2005:topics ;
-    dcterms:source <http://www.doingbusiness.org/custom-query> ;
-    foaf:page <http://www.doingbusiness.org/custom-query> ;
-    .
-
-doingbusiness-dataset:ease-of-doing-business
+    qb:structure structure:ease-of-doing-business ;
     rdfs:label "Dooing Business - Ease of Doing Business dataset"@en ;
-    foaf:page <http://www.doingbusiness.org/rankings> ;
-    dcterms:issued "2014-11-30T00:00:00Z"^^xsd:dateTime ;
-    dcterms:creator <http://renatostauffer.ch> ;
-    dcterms:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
-    dcterms:subject
-        <http://purl.org/linked-data/sdmx/2009/subject#1.8> ,
-        <http://purl.org/linked-data/sdmx/2009/subject#1.10> ,
-        <http://purl.org/linked-data/sdmx/2009/subject#2.4.6> ,
-        <http://purl.org/linked-data/sdmx/2009/subject#2.5> ,
-        <http://purl.org/linked-data/sdmx/2009/subject#2.6> ,
-        <http://purl.org/linked-data/sdmx/2009/subject#3.3> ,
-        <http://purl.org/linked-data/sdmx/2009/subject#3.4> ;
-    dcterms:hasPart
-        <http://doingbusiness.270a.info/dataset/EODB2005> ;
-    dcterms:isPartOf doingbusiness:dataset ;
-    .
-
-eodb-2005:topics
-    rdfs:label "Dataset for Doing Business Indicators (Topics)"@en ;
-    dcterms:hasPart
-    	eodb-2005-topics:starting-a-business,
-    	#TODO - add remaining indicators...
-    .
-
-eodb-2005-topics:starting-a-business
-	a qb:DataSet ;
-	qb:structure starting-a-business-2005:structure ;
-    rdfs:label "Dataset for the Doing Business Indicator 'Starting a Business'"@en ;
-    dcterms:isPartOf <http://doingbusiness.270a.info/dataset/EODB2005> ;
     foaf:page <http://www.doingbusiness.org/custom-query> ;
-    dcterms:issued "2005-11-04T00:00:00Z"^^xsd:dateTime ; #TODO - What date to use here?
-    dcterms:modified "2014-11-04T00:00:00Z"^^xsd:dateTime ; #TODO - What date to use here?
-    dcterms:creator <http://renatostauffer.ch> ;
+    dcterms:issued "2014-12-04T00:00:00Z"^^xsd:dateTime ; 
+    dcterms:modified "2014-12-04T00:00:00Z"^^xsd:dateTime ;
+    dcterms:creator <http://renatostauffer.ch> ,
+                    <http://csarven.ca/#i> ;
     dcterms:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
     .
 
-starting-a-business-2005:structure
+structure:starting-a-business
     a qb:DataStructureDefinition ;
-    #TODO - Add components here
-	.
+        qb:component component:rank;
+        qb:component component:overall-dtf;
+        qb:component component:refPeriod ;
+        qb:component component:economy ;
+        qb:component component:indicator-ease-of-doing-business ;
+    .
+
+component:indicator-ease-of-doing-business
+    a qb:ComponentSpecification ;
+    qb:dimension code-indicator:ease-of-doing-business ;
+    .
+
+code-indicator:ease-of-doing-business
+    a skos:Concept ;
+    skos:inScheme code:indicator ;
+    skos:topConceptOf code:indicator ;
+    skos:definition "The indicator 'Ease of doing business' determines how easy it is to do business in a certain economy."@en ;
+    .
+
+component:overall-dtf
+    a qb:ComponentSpecification ;
+    qb:measure measure:overall-dtf ;
+    .
+
+measure:overall-dtf
+    a qb:MeasureProperty ;
+    rdfs:label "Overall Distance to Frontier"@en ;
+    rdfs:range xsd:integer ;
+    .
+
+#
+# Dealing with Construction Permits dataset
+#
 
 
+#
+# Getting Electricity dataset
+#
+
+#
+# Registering Property dataset
+#
+
+#
+# Getting Credit dataset
+#
+
+#
+# Protecting Minority Investors dataset
+#
+
+#
+# Paying Taxes dataset
+#
+
+#
+# Trading Across Borders dataset
+#
+
+#
+# Enforcing Contracts dataset
+#
+
+#
+# Resolving Insolvency dataset
+#
