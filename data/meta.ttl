@@ -14,13 +14,12 @@
 @prefix sdmx-metadata: <http://purl.org/linked-data/sdmx/2009/metadata#> .
 
 @prefix doingbusiness: <http://doingbusiness.270a.info/> .
-@prefix measure: <http://doingbusiness.270a.info/measure/> .
-@prefix doingbusiness-dataset: <http://doingbusiness.270a.info/dataset/> .
-@prefix doingbusiness-structure: <http://doingbusiness.270a.info/structure/> .
 @prefix dataset: <http://doingbusiness.270a.info/dataset/> .
 @prefix structure: <http://doingbusiness.270a.info/structure/> .
 @prefix component: <http://doingbusiness.270a.info/component/> .
 @prefix dimension: <http://doingbusiness.270a.info/dimension/> .
+@prefix measure: <http://doingbusiness.270a.info/measure/> .
+@prefix attribute: <http://doingbusiness.270a.info/attribute/> .
 @prefix concept: <http://doingbusiness.270a.info/concept/> .
 @prefix concept-indicator: <http://doingbusiness.270a.info/concept/indicator/> .
 @prefix code: <http://doingbusiness.270a.info/code/> .
