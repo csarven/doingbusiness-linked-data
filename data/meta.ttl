@@ -1,0 +1,1003 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix qb: <http://purl.org/linked-data/cube#> .
+@prefix sdmx: <http://purl.org/linked-data/sdmx#> .
+@prefix sdmx-attribute: <http://purl.org/linked-data/sdmx/2009/attribute#> .
+@prefix sdmx-code: <http://purl.org/linked-data/sdmx/2009/code#> .
+@prefix sdmx-concept: <http://purl.org/linked-data/sdmx/2009/concept#> .
+@prefix sdmx-dimension: <http://purl.org/linked-data/sdmx/2009/dimension#> .
+@prefix sdmx-measure: <http://purl.org/linked-data/sdmx/2009/measure#> .
+@prefix sdmx-metadata: <http://purl.org/linked-data/sdmx/2009/metadata#> .
+@prefix doingbusiness: <http://doingbusiness.270a.info/> .
+@prefix measure: <http://doingbusiness.270a.info/measure/> .
+@prefix doingbusiness-dataset: <http://doingbusiness.270a.info/dataset/> .
+@prefix doingbusiness-structure: <http://doingbusiness.270a.info/structure/> .
+@prefix dataset: <http://doingbusiness.270a.info/dataset/> .
+@prefix structure: <http://doingbusiness.270a.info/structure/> .
+@prefix component: <http://doingbusiness.270a.info/component/> .
+@prefix dimension: <http://doingbusiness.270a.info/dimension/> .
+@prefix concept: <http://doingbusiness.270a.info/concept/> .
+@prefix concept-indicator: <http://doingbusiness.270a .info/concept/indicator/> .
+@prefix code <http://doingbusiness.270a.info/code/> .
+@prefeix code-indicator: <http://doingbusiness.270a.info/code/indicator/> .
+@prefix economy: <http://doingbuinsess.270a.info/code/economy/> .
+
+#
+# Ease of Doing Business dataset
+#
+
+dataset:ease-of-doing-business
+	qb:structure structure:ease-of-doing-business ;
+	rdfs:label "Dooing Business - Ease of Doing Business dataset"@en ;
+	dcterms:issued "2014-12-04T00:00:00Z"^^xsd:dateTime ;
+	dcterms:modified "2014-12-04T00:00:00Z"^^xsd:dateTime ;
+	dcterms:creator <http://renatostauffer.ch>,
+			<http://csarven.ca/#i> ;
+	dcterms:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
+.
+
+structure:ease-of-doing-business
+    a qb:DataStructureDefinition ;
+    qb:component component:rank ;
+	qb:component component:economy ;
+    qb:component component:refPeriod ;
+    qb:component component:indicator-ease-of-doing-business
+	qb:component component:overall-dtf ;
+.
+
+code-indicator:ease-of-doing-business
+	a skos:Concept ;
+	skos:inScheme code:indicator ;
+	skos:topConceptOf code:indicator ;
+	skos:definition "The indicator Ease of Doing Business determines how easy it is to do business in a certain economy."@en ;
+.
+
+#
+# Dealing with Construction Permits dataset
+#
+
+dataset:dealing-with-construction-permits
+	qb:structure structure:dealing-with-construction-permits ;
+	rdfs:label "Dooing Business - Dealing with Construction Permits dataset"@en ;
+	foaf:page <http://www.doingbusiness.org/methodology/dealing-with-construction-permits> ;
+	dcterms:issued "2014-12-04T00:00:00Z"^^xsd:dateTime ;
+	dcterms:modified "2014-12-04T00:00:00Z"^^xsd:dateTime ;
+	dcterms:creator <http://renatostauffer.ch>,
+			<http://csarven.ca/#i> ;
+	dcterms:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
+.
+
+structure:dealing-with-construction-permits
+    a qb:DataStructureDefinition ;
+    qb:component component:rank ;
+	qb:component component:dtf ;
+	qb:component component:economy ;
+    qb:component component:refPeriod ;
+    qb:component component:indicator-dealing-with-construction-permits
+	qb:component component:procedures ;
+	qb:component component:days ;
+	qb:component component:cost-in-percent-of-warehouse-value ;
+.
+
+code-indicator:dealing-with-construction-permits
+	a skos:Concept ;
+	skos:inScheme code:indicator ;
+	skos:topConceptOf code:indicator ;
+	skos:definition "The indicator Dealing with Construction Permits determines how easy it is to comply with formalities to build a warehouse in a certain economy.
+"@en ;
+.
+
+#
+# Enforcing Contracts dataset
+#
+
+dataset:enforcing-contracts
+	qb:structure structure:enforcing-contracts ;
+	rdfs:label "Dooing Business - Enforcing Contracts dataset"@en ;
+	foaf:page <http://www.doingbusiness.org/methodology/enforcing-contracts> ;
+	dcterms:issued "2014-12-04T00:00:00Z"^^xsd:dateTime ;
+	dcterms:modified "2014-12-04T00:00:00Z"^^xsd:dateTime ;
+	dcterms:creator <http://renatostauffer.ch>,
+			<http://csarven.ca/#i> ;
+	dcterms:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
+.
+
+structure:enforcing-contracts
+    a qb:DataStructureDefinition ;
+    qb:component component:rank ;
+	qb:component component:dtf ;
+	qb:component component:economy ;
+    qb:component component:refPeriod ;
+    qb:component component:indicator-enforcing-contracts
+	qb:component component:days ;
+	qb:component component:cost-in-percent-of-claim ;
+	qb:component component:procedures ;
+.
+
+code-indicator:enforcing-contracts
+	a skos:Concept ;
+	skos:inScheme code:indicator ;
+	skos:topConceptOf code:indicator ;
+	skos:definition "The indicator Encoring Contracts measures the efficiency of the judicial system in resolving a commercial dispute."@en ;
+.
+
+#
+# Getting Credit dataset
+#
+
+dataset:getting-credit
+	qb:structure structure:getting-credit ;
+	rdfs:label "Dooing Business - Getting Credit dataset"@en ;
+	foaf:page <http://www.doingbusiness.org/methodology/getting-credit> ;
+	dcterms:issued "2014-12-04T00:00:00Z"^^xsd:dateTime ;
+	dcterms:modified "2014-12-04T00:00:00Z"^^xsd:dateTime ;
+	dcterms:creator <http://renatostauffer.ch>,
+			<http://csarven.ca/#i> ;
+	rdfs:comment "The dataset Getting Credit is not comparable between DB2013 and DB2014 due to methodlogical changes."@en ;
+	dcterms:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
+.
+
+structure:getting-credit
+    a qb:DataStructureDefinition ;
+    qb:component component:rank ;
+	qb:component component:dtf ;
+	qb:component component:economy ;
+    qb:component component:refPeriod ;
+    qb:component component:indicator-getting-credit
+	qb:component component:strength-of-legal-rights-index ;
+	qb:component component:depth-of-credit-information-index ;
+	qb:component component:credit-registry-coverage-in-percent-of-adults ;
+	qb:component component:credit-bureau-coverage-in-percent-of-adults ;
+.
+
+code-indicator:getting-credit
+	a skos:Concept ;
+	skos:inScheme code:indicator ;
+	skos:topConceptOf code:indicator ;
+	skos:definition "The indicator Getting Credit explores two sets of issues—the strength of credit reporting systems and the effectiveness of collateral and bankruptcy laws in facilitating lending"@en ;
+.
+
+#
+# Getting Electricity dataset
+#
+
+dataset:getting-electricity
+	qb:structure structure:getting-electricity ;
+	rdfs:label "Dooing Business - Getting Electricity dataset"@en ;
+	foaf:page <http://www.doingbusiness.org/methodology/getting-electricity> ;
+	dcterms:issued "2014-12-04T00:00:00Z"^^xsd:dateTime ;
+	dcterms:modified "2014-12-04T00:00:00Z"^^xsd:dateTime ;
+	dcterms:creator <http://renatostauffer.ch>,
+			<http://csarven.ca/#i> ;
+	dcterms:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
+.
+
+structure:getting-electricity
+    a qb:DataStructureDefinition ;
+    qb:component component:rank ;
+	qb:component component:dtf ;
+	qb:component component:economy ;
+    qb:component component:refPeriod ;
+    qb:component component:indicator-getting-electricity
+	qb:component component:procedures ;
+	qb:component component:days ;
+	qb:component component:cost-in-percent-of-income-per-capita ;
+.
+
+code-indicator:getting-electricity
+	a skos:Concept ;
+	skos:inScheme code:indicator ;
+	skos:topConceptOf code:indicator ;
+	skos:definition "The indicator Getting Electricity determines how easy it is to obtain a permanent electricity connection and supply for a standardized warehouse in a certain economy."@en ;
+.
+
+#
+# Paying Taxes dataset
+#
+
+dataset:paying-taxes
+	qb:structure structure:paying-taxes ;
+	rdfs:label "Dooing Business - Paying Taxes dataset"@en ;
+	foaf:page <http://www.doingbusiness.org/methodology/paying-taxes> ;
+	dcterms:issued "2014-12-04T00:00:00Z"^^xsd:dateTime ;
+	dcterms:modified "2014-12-04T00:00:00Z"^^xsd:dateTime ;
+	dcterms:creator <http://renatostauffer.ch>,
+			<http://csarven.ca/#i> ;
+	dcterms:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
+.
+
+structure:paying-taxes
+    a qb:DataStructureDefinition ;
+    qb:component component:rank ;
+	qb:component component:dtf ;
+	qb:component component:economy ;
+    qb:component component:refPeriod ;
+    qb:component component:indicator-paying-taxes
+	qb:component component:payments-per-year ;
+	qb:component component:hours-per-year ;
+	qb:component component:profit-tax-in-percent ;
+	qb:component component:labor-tax-and-contributions-in-percent ;
+	qb:component component:other-taxes-in-percent ;
+	qb:component component:total-tax-rate-in-percent-of-profit ;
+.
+
+code-indicator:paying-taxes
+	a skos:Concept ;
+	skos:inScheme code:indicator ;
+	skos:topConceptOf code:indicator ;
+	skos:definition "The indicator Paying Taxes records the taxes and mandatory contributions that a medium-size company must pay in a given year as well as measures of the administrative burden of paying taxes and contributions"@en ;
+.
+
+#
+# Protecting Minority Investors dataset
+#
+
+dataset:protecting-minority-investors
+	qb:structure structure:protecting-minority-investors ;
+	rdfs:label "Dooing Business - Protecting Minority Investors dataset"@en ;
+	foaf:page <http://www.doingbusiness.org/methodology/protecting-minority-investors> ;
+	dcterms:issued "2014-12-04T00:00:00Z"^^xsd:dateTime ;
+	dcterms:modified "2014-12-04T00:00:00Z"^^xsd:dateTime ;
+	dcterms:creator <http://renatostauffer.ch>,
+			<http://csarven.ca/#i> ;
+	rdfs:comment "The dataset Protecting Minority Investors is not comparable between DB2013 and DB2014 due to methodlogical changes."@en ;
+	dcterms:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
+.
+
+structure:protecting-minority-investors
+    a qb:DataStructureDefinition ;
+    qb:component component:rank ;
+	qb:component component:dtf ;
+	qb:component component:economy ;
+    qb:component component:refPeriod ;
+    qb:component component:indicator-protecting-minority-investors
+	qb:component component:extent-of-disclosure-index ;
+	qb:component component:extent-of-director-liability-index ;
+	qb:component component:ease-of-shareholder-suits-index ;
+	qb:component component:extent-of-conflict-of-interest-regulation-index ;
+	qb:component component:extent-of-shareholder-rights-index ;
+	qb:component component:strength-of-governance-structure ;
+	qb:component component:extent-of-corporate-transparency-index ;
+	qb:component component:extent-of-shareholder-governance-index ;
+	qb:component component:strength-of-minority-investor-protection-index ;
+.
+
+code-indicator:protecting-minority-investors
+	a skos:Concept ;
+	skos:inScheme code:indicator ;
+	skos:topConceptOf code:indicator ;
+	skos:definition "The indicator Protecting Minority Investors measures the strength of minority shareholder protections against misuse of corporate assets by directors for their personal gain as well as shareholder rights, governance safeguards and corporate transparency requirements that reduce the risk of abuse"@en ;
+.
+
+#
+# Registering Property dataset
+#
+
+dataset:registering-property
+	qb:structure structure:registering-property ;
+	rdfs:label "Dooing Business - Registering Property dataset"@en ;
+	foaf:page <http://www.doingbusiness.org/methodology/registering-property> ;
+	dcterms:issued "2014-12-04T00:00:00Z"^^xsd:dateTime ;
+	dcterms:modified "2014-12-04T00:00:00Z"^^xsd:dateTime ;
+	dcterms:creator <http://renatostauffer.ch>,
+			<http://csarven.ca/#i> ;
+	dcterms:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
+.
+
+structure:registering-property
+    a qb:DataStructureDefinition ;
+    qb:component component:rank ;
+	qb:component component:dtf ;
+	qb:component component:economy ;
+    qb:component component:refPeriod ;
+    qb:component component:indicator-registering-property
+	qb:component component:procedures ;
+	qb:component component:days ;
+	qb:component component:cost-in-percent-of-property-value ;
+.
+
+code-indicator:registering-property
+	a skos:Concept ;
+	skos:inScheme code:indicator ;
+	skos:topConceptOf code:indicator ;
+	skos:definition "The indicator Registering Property determines how easy it is to transfer property between two local companies in a certain economy."@en ;
+.
+
+#
+# Resolving Insolvency dataset
+#
+
+dataset:resolving-insolvency
+	qb:structure structure:resolving-insolvency ;
+	rdfs:label "Dooing Business - Resolving Insolvency dataset"@en ;
+	foaf:page <http://www.doingbusiness.org/methodology/resolving-insolvency> ;
+	dcterms:issued "2014-12-04T00:00:00Z"^^xsd:dateTime ;
+	dcterms:modified "2014-12-04T00:00:00Z"^^xsd:dateTime ;
+	dcterms:creator <http://renatostauffer.ch>,
+			<http://csarven.ca/#i> ;
+	rdfs:comment "The dataset Resolving Insolvency is not comparable between DB2013 and DB2014 due to methodlogical changes."@en ;
+	dcterms:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
+.
+
+structure:resolving-insolvency
+    a qb:DataStructureDefinition ;
+    qb:component component:rank ;
+	qb:component component:dtf ;
+	qb:component component:economy ;
+    qb:component component:refPeriod ;
+    qb:component component:indicator-resolving-insolvency
+	qb:component component:years ;
+	qb:component component:cost-in-percent-of-estate ;
+	qb:component component:outcome ;
+	qb:component component:recovery-rate ;
+	qb:component component:commencement-of-proceedings-index ;
+	qb:component component:management-of-debtor-assets-index ;
+	qb:component component:reorganization-proceedings-index ;
+	qb:component component:creditor-participation-index ;
+	qb:component component:strength-of-insolvency-framework-index ;
+.
+
+code-indicator:resolving-insolvency
+	a skos:Concept ;
+	skos:inScheme code:indicator ;
+	skos:topConceptOf code:indicator ;
+	skos:definition "The indicator Resolving Insolvency identifies weaknesses in existing bankruptcy law and the main procedural and administrative bottlenecks in the insolvency process"@en ;
+.
+
+#
+# Starting a Business dataset
+#
+
+dataset:starting-a-business
+	qb:structure structure:starting-a-business ;
+	rdfs:label "Dooing Business - Starting a Business dataset"@en ;
+	foaf:page <http://www.doingbusiness.org/methodology/starting-a-business> ;
+	dcterms:issued "2014-12-04T00:00:00Z"^^xsd:dateTime ;
+	dcterms:modified "2014-12-04T00:00:00Z"^^xsd:dateTime ;
+	dcterms:creator <http://renatostauffer.ch>,
+			<http://csarven.ca/#i> ;
+	dcterms:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
+.
+
+structure:starting-a-business
+    a qb:DataStructureDefinition ;
+    qb:component component:rank ;
+	qb:component component:dtf ;
+	qb:component component:economy ;
+    qb:component component:refPeriod ;
+    qb:component component:indicator-starting-a-business
+	qb:component component:procedures ;
+	qb:component component:days ;
+	qb:component component:cost-in-percent-of-income-per-capita ;
+	qb:component component:paid-in-minimum-capital-in-percent-of-income-per-capita ;
+.
+
+code-indicator:starting-a-business
+	a skos:Concept ;
+	skos:inScheme code:indicator ;
+	skos:topConceptOf code:indicator ;
+	skos:definition "The indicator Starting a Business determines how easy it is for an entrepreneur to start up and formally operate an industrial or commercial business, as well as the time and cost to complete these procedures and the paid-in minimum capital requirement in a certain economy."@en ;
+.
+
+#
+# Trading Across Borders dataset
+#
+
+dataset:trading-across-borders
+	qb:structure structure:trading-across-borders ;
+	rdfs:label "Dooing Business - Trading Across Borders dataset"@en ;
+	foaf:page <http://www.doingbusiness.org/methodology/trading-across-borders> ;
+	dcterms:issued "2014-12-04T00:00:00Z"^^xsd:dateTime ;
+	dcterms:modified "2014-12-04T00:00:00Z"^^xsd:dateTime ;
+	dcterms:creator <http://renatostauffer.ch>,
+			<http://csarven.ca/#i> ;
+	dcterms:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
+.
+
+structure:trading-across-borders
+    a qb:DataStructureDefinition ;
+    qb:component component:rank ;
+	qb:component component:dtf ;
+	qb:component component:economy ;
+    qb:component component:refPeriod ;
+    qb:component component:indicator-trading-across-borders
+	qb:component component:number-of-documents-to-export ;
+	qb:component component:days-to-export ;
+	qb:component component:cost-to-export-in-us-dollar-per-container ;
+	qb:component component:cost-to-export-in-deflated-us-dollar-per-container ;
+	qb:component component:number-of-documents-to-import ;
+	qb:component component:days-to-import ;
+	qb:component component:cost-to-import-in-us-dollar-per-container ;
+	qb:component component:cost-to-import-in-deflated-us-dollar-per-container ;
+.
+
+code-indicator:trading-across-borders
+	a skos:Concept ;
+	skos:inScheme code:indicator ;
+	skos:topConceptOf code:indicator ;
+	skos:definition "The indicator Trading Across Borders determines how easy it is to import and export by sea transport. It measures the time and cost associated with exporting and importing a standardized cargo of goods by sea transport."@en ;
+.
+
+code:indicator
+	skos:prefLabel "Indicator Concept Scheme"@en ;
+	skos:hasTopConcept code-indicator:
+		ease-of-doing-business,
+		dealing-with-construction-permits,
+		enforcing-contracts,
+		getting-credit,
+		getting-electricity,
+		paying-taxes,
+		protecting-minority-investors,
+		registering-property,
+		resolving-insolvency,
+		starting-a-business,
+		trading-across-borders ;
+.
+
+component:indicator-ease-of-doing-business
+	a qb:ComponentSpecification ;
+	qb:dimension code-indicator:ease-of-doing-business ;
+	
+component:indicator-dealing-with-construction-permits
+	a qb:ComponentSpecification ;
+	qb:dimension code-indicator:dealing-with-construction-permits ;
+	
+component:indicator-enforcing-contracts
+	a qb:ComponentSpecification ;
+	qb:dimension code-indicator:enforcing-contracts ;
+	
+component:indicator-getting-credit
+	a qb:ComponentSpecification ;
+	qb:dimension code-indicator:getting-credit ;
+	
+component:indicator-getting-electricity
+	a qb:ComponentSpecification ;
+	qb:dimension code-indicator:getting-electricity ;
+	
+component:indicator-paying-taxes
+	a qb:ComponentSpecification ;
+	qb:dimension code-indicator:paying-taxes ;
+	
+component:indicator-protecting-minority-investors
+	a qb:ComponentSpecification ;
+	qb:dimension code-indicator:protecting-minority-investors ;
+	
+component:indicator-registering-property
+	a qb:ComponentSpecification ;
+	qb:dimension code-indicator:registering-property ;
+	
+component:indicator-resolving-insolvency
+	a qb:ComponentSpecification ;
+	qb:dimension code-indicator:resolving-insolvency ;
+	
+component:indicator-starting-a-business
+	a qb:ComponentSpecification ;
+	qb:dimension code-indicator:starting-a-business ;
+	
+component:indicator-trading-across-borders
+	a qb:ComponentSpecification ;
+	qb:dimension code-indicator:trading-across-borders ;
+	
+component:economy
+    a qb:ComponentSpecification
+    qb:dimension sdmx-dimension:refArea ;
+    .
+
+component:refPeriod
+    a qb:ComponentSpecification
+    qb:dimension sdmx-dimension:refPeriod ;
+    .
+
+component:frequency
+	a qb:ComponentSpecification
+	qb:dimension sdmx-dimension:re 
+
+component:overall-dtf
+	a qb:ComponentSpecification ;
+	qb:measure measure:overall-dtf ;
+    .
+
+measure:overall-dtf
+	a qb:MeasureProperty ;
+    rdfs:label "Overall DTF"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:rank
+	a qb:ComponentSpecification ;
+	qb:measure measure:rank ;
+    .
+
+measure:rank
+	a qb:MeasureProperty ;
+    rdfs:label "Rank"@en ;
+    rdfs:range xsd:int ;
+	.
+
+component:dtf
+	a qb:ComponentSpecification ;
+	qb:measure measure:dtf ;
+    .
+
+measure:dtf
+	a qb:MeasureProperty ;
+    rdfs:label "DTF"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:procedures
+	a qb:ComponentSpecification ;
+	qb:measure measure:procedures ;
+    .
+
+measure:procedures
+	a qb:MeasureProperty ;
+    rdfs:label "Procedures"@en ;
+    rdfs:range xsd:int ;
+	.
+
+component:days
+	a qb:ComponentSpecification ;
+	qb:measure measure:days ;
+    .
+
+measure:days
+	a qb:MeasureProperty ;
+    rdfs:label "Days"@en ;
+    rdfs:range xsd:int ;
+	.
+
+component:cost-in-percent-of-warehouse-value
+	a qb:ComponentSpecification ;
+	qb:measure measure:cost-in-percent-of-warehouse-value ;
+    .
+
+measure:cost-in-percent-of-warehouse-value
+	a qb:MeasureProperty ;
+    rdfs:label "Cost in % of warehouse value"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:cost-in-percent-of-claim
+	a qb:ComponentSpecification ;
+	qb:measure measure:cost-in-percent-of-claim ;
+    .
+
+measure:cost-in-percent-of-claim
+	a qb:MeasureProperty ;
+    rdfs:label "Cost in % of claim"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:strength-of-legal-rights-index
+	a qb:ComponentSpecification ;
+	qb:measure measure:strength-of-legal-rights-index ;
+    .
+
+measure:strength-of-legal-rights-index
+	a qb:MeasureProperty ;
+    rdfs:label "Strngth of legal rights index"@en ;
+    rdfs:range xsd:int ;
+	.
+
+component:depth-of-credit-information-index
+	a qb:ComponentSpecification ;
+	qb:measure measure:depth-of-credit-information-index ;
+    .
+
+measure:depth-of-credit-information-index
+	a qb:MeasureProperty ;
+    rdfs:label "Depth of credit information index"@en ;
+    rdfs:range xsd:int ;
+	.
+
+component:credit-registry-coverage-in-percent-of-adults
+	a qb:ComponentSpecification ;
+	qb:measure measure:credit-registry-coverage-in-percent-of-adults ;
+    .
+
+measure:credit-registry-coverage-in-percent-of-adults
+	a qb:MeasureProperty ;
+    rdfs:label "Credit registry coverage"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:credit-bureau-coverage-in-percent-of-adults
+	a qb:ComponentSpecification ;
+	qb:measure measure:credit-bureau-coverage-in-percent-of-adults ;
+    .
+
+measure:credit-bureau-coverage-in-percent-of-adults
+	a qb:MeasureProperty ;
+    rdfs:label "Credit bureau coverage"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:cost-in-percent-of-income-per-capita
+	a qb:ComponentSpecification ;
+	qb:measure measure:cost-in-percent-of-income-per-capita ;
+    .
+
+measure:cost-in-percent-of-income-per-capita
+	a qb:MeasureProperty ;
+    rdfs:label "Cost in % of income per capita"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:payments-per-year
+	a qb:ComponentSpecification ;
+	qb:measure measure:payments-per-year ;
+    .
+
+measure:payments-per-year
+	a qb:MeasureProperty ;
+    rdfs:label "Payments per year"@en ;
+    rdfs:range xsd:int ;
+	.
+
+component:hours-per-year
+	a qb:ComponentSpecification ;
+	qb:measure measure:hours-per-year ;
+    .
+
+measure:hours-per-year
+	a qb:MeasureProperty ;
+    rdfs:label "Hours per year"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:profit-tax-in-percent
+	a qb:ComponentSpecification ;
+	qb:measure measure:profit-tax-in-percent ;
+    .
+
+measure:profit-tax-in-percent
+	a qb:MeasureProperty ;
+    rdfs:label "Profit tax (%)"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:labor-tax-and-contributions-in-percent
+	a qb:ComponentSpecification ;
+	qb:measure measure:labor-tax-and-contributions-in-percent ;
+    .
+
+measure:labor-tax-and-contributions-in-percent
+	a qb:MeasureProperty ;
+    rdfs:label "Labor tax and contributions (%)"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:other-taxes-in-percent
+	a qb:ComponentSpecification ;
+	qb:measure measure:other-taxes-in-percent ;
+    .
+
+measure:other-taxes-in-percent
+	a qb:MeasureProperty ;
+    rdfs:label "Other taxes (%)"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:total-tax-rate-in-percent-of-profit
+	a qb:ComponentSpecification ;
+	qb:measure measure:total-tax-rate-in-percent-of-profit ;
+    .
+
+measure:total-tax-rate-in-percent-of-profit
+	a qb:MeasureProperty ;
+    rdfs:label "Total tax rate in % of profit"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:extent-of-disclosure-index
+	a qb:ComponentSpecification ;
+	qb:measure measure:extent-of-disclosure-index ;
+    .
+
+measure:extent-of-disclosure-index
+	a qb:MeasureProperty ;
+    rdfs:label "Extent of disclosure index"@en ;
+    rdfs:range xsd:int ;
+	.
+
+component:extent-of-director-liability-index
+	a qb:ComponentSpecification ;
+	qb:measure measure:extent-of-director-liability-index ;
+    .
+
+measure:extent-of-director-liability-index
+	a qb:MeasureProperty ;
+    rdfs:label "Extent of director liability index"@en ;
+    rdfs:range xsd:int ;
+	.
+
+component:ease-of-shareholder-suits-index
+	a qb:ComponentSpecification ;
+	qb:measure measure:ease-of-shareholder-suits-index ;
+    .
+
+measure:ease-of-shareholder-suits-index
+	a qb:MeasureProperty ;
+    rdfs:label "Ease of shareholder suits index"@en ;
+    rdfs:range xsd:int ;
+	.
+
+component:extent-of-conflict-of-interest-regulation-index
+	a qb:ComponentSpecification ;
+	qb:measure measure:extent-of-conflict-of-interest-regulation-index ;
+    .
+
+measure:extent-of-conflict-of-interest-regulation-index
+	a qb:MeasureProperty ;
+    rdfs:label "Extent of conflict of intrest regulation index"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:extent-of-shareholder-rights-index
+	a qb:ComponentSpecification ;
+	qb:measure measure:extent-of-shareholder-rights-index ;
+    .
+
+measure:extent-of-shareholder-rights-index
+	a qb:MeasureProperty ;
+    rdfs:label "Extent of shareholder rights index"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:strength-of-governance-structure
+	a qb:ComponentSpecification ;
+	qb:measure measure:strength-of-governance-structure ;
+    .
+
+measure:strength-of-governance-structure
+	a qb:MeasureProperty ;
+    rdfs:label "Strength of governance structure index"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:extent-of-corporate-transparency-index
+	a qb:ComponentSpecification ;
+	qb:measure measure:extent-of-corporate-transparency-index ;
+    .
+
+measure:extent-of-corporate-transparency-index
+	a qb:MeasureProperty ;
+    rdfs:label "Extent of corporate transparency index"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:extent-of-shareholder-governance-index
+	a qb:ComponentSpecification ;
+	qb:measure measure:extent-of-shareholder-governance-index ;
+    .
+
+measure:extent-of-shareholder-governance-index
+	a qb:MeasureProperty ;
+    rdfs:label "Extent of shareholder governance index"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:strength-of-minority-investor-protection-index
+	a qb:ComponentSpecification ;
+	qb:measure measure:strength-of-minority-investor-protection-index ;
+    .
+
+measure:strength-of-minority-investor-protection-index
+	a qb:MeasureProperty ;
+    rdfs:label "Strength of minority investor protection index"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:cost-in-percent-of-property-value
+	a qb:ComponentSpecification ;
+	qb:measure measure:cost-in-percent-of-property-value ;
+    .
+
+measure:cost-in-percent-of-property-value
+	a qb:MeasureProperty ;
+    rdfs:label "Cost in % of property value"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:years
+	a qb:ComponentSpecification ;
+	qb:measure measure:years ;
+    .
+
+measure:years
+	a qb:MeasureProperty ;
+    rdfs:label "Years"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:cost-in-percent-of-estate
+	a qb:ComponentSpecification ;
+	qb:measure measure:cost-in-percent-of-estate ;
+    .
+
+measure:cost-in-percent-of-estate
+	a qb:MeasureProperty ;
+    rdfs:label "Cost in % of estate"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:outcome
+	a qb:ComponentSpecification ;
+	qb:measure measure:outcome ;
+    .
+
+measure:outcome
+	a qb:MeasureProperty ;
+    rdfs:label "Outcome"@en ;
+    rdfs:range xsd:int ;
+	.
+
+component:recovery-rate
+	a qb:ComponentSpecification ;
+	qb:measure measure:recovery-rate ;
+    .
+
+measure:recovery-rate
+	a qb:MeasureProperty ;
+    rdfs:label "Recovery rate"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:commencement-of-proceedings-index
+	a qb:ComponentSpecification ;
+	qb:measure measure:commencement-of-proceedings-index ;
+    .
+
+measure:commencement-of-proceedings-index
+	a qb:MeasureProperty ;
+    rdfs:label "Commencement of proceedings index"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:management-of-debtor-assets-index
+	a qb:ComponentSpecification ;
+	qb:measure measure:management-of-debtor-assets-index ;
+    .
+
+measure:management-of-debtor-assets-index
+	a qb:MeasureProperty ;
+    rdfs:label "Management of Debtor's assets index"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:reorganization-proceedings-index
+	a qb:ComponentSpecification ;
+	qb:measure measure:reorganization-proceedings-index ;
+    .
+
+measure:reorganization-proceedings-index
+	a qb:MeasureProperty ;
+    rdfs:label "Reorganization proceedings index"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:creditor-participation-index
+	a qb:ComponentSpecification ;
+	qb:measure measure:creditor-participation-index ;
+    .
+
+measure:creditor-participation-index
+	a qb:MeasureProperty ;
+    rdfs:label "Creditor participatoin index"@en ;
+    rdfs:range xsd:int ;
+	.
+
+component:strength-of-insolvency-framework-index
+	a qb:ComponentSpecification ;
+	qb:measure measure:strength-of-insolvency-framework-index ;
+    .
+
+measure:strength-of-insolvency-framework-index
+	a qb:MeasureProperty ;
+    rdfs:label "Strength of insolvency framework index"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:paid-in-minimum-capital-in-percent-of-income-per-capita
+	a qb:ComponentSpecification ;
+	qb:measure measure:paid-in-minimum-capital-in-percent-of-income-per-capita ;
+    .
+
+measure:paid-in-minimum-capital-in-percent-of-income-per-capita
+	a qb:MeasureProperty ;
+    rdfs:label "Paid-in min. capital in % of income per capita"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:number-of-documents-to-export
+	a qb:ComponentSpecification ;
+	qb:measure measure:number-of-documents-to-export ;
+    .
+
+measure:number-of-documents-to-export
+	a qb:MeasureProperty ;
+    rdfs:label "Number of documents needed to export"@en ;
+    rdfs:range xsd:int ;
+	.
+
+component:days-to-export
+	a qb:ComponentSpecification ;
+	qb:measure measure:days-to-export ;
+    .
+
+measure:days-to-export
+	a qb:MeasureProperty ;
+    rdfs:label "Days to export"@en ;
+    rdfs:range xsd:decimal ;
+.
+
+component:cost-to-export-in-us-dollar-per-container
+	a qb:ComponentSpecification ;
+	qb:measure measure:cost-to-export-in-us-dollar-per-container ;
+    .
+
+measure:cost-to-export-in-us-dollar-per-container
+	a qb:MeasureProperty ;
+    rdfs:label "Cost to export in US Dollar per container"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:cost-to-export-in-deflated-us-dollar-per-container
+	a qb:ComponentSpecification ;
+	qb:measure measure:cost-to-export-in-deflated-us-dollar-per-container ;
+    .
+
+measure:cost-to-export-in-deflated-us-dollar-per-container
+	a qb:MeasureProperty ;
+    rdfs:label "Deflated cost to export in US Dollar per container"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:number-of-documents-to-import
+	a qb:ComponentSpecification ;
+	qb:measure measure:number-of-documents-to-import ;
+    .
+
+measure:number-of-documents-to-import
+	a qb:MeasureProperty ;
+    rdfs:label "Number of Documents needed to import"@en ;
+    rdfs:range xsd:int ;
+	.
+
+component:days-to-import
+	a qb:ComponentSpecification ;
+	qb:measure measure:days-to-import ;
+    .
+
+measure:days-to-import
+	a qb:MeasureProperty ;
+    rdfs:label "Days to import"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:cost-to-import-in-us-dollar-per-container
+	a qb:ComponentSpecification ;
+	qb:measure measure:cost-to-import-in-us-dollar-per-container ;
+    .
+
+measure:cost-to-import-in-us-dollar-per-container
+	a qb:MeasureProperty ;
+    rdfs:label "Cost to import in US Dollar per container"@en ;
+    rdfs:range xsd:decimal ;
+	.
+
+component:cost-to-import-in-deflated-us-dollar-per-container
+	a qb:ComponentSpecification ;
+	qb:measure measure:cost-to-import-in-deflated-us-dollar-per-container ;
+    .
+
+measure:cost-to-import-in-deflated-us-dollar-per-container
+	a qb:MeasureProperty ;
+    rdfs:label "Deflated cost to import in US Dollar per container"@en ;
+    rdfs:range xsd:decimal ;
+	.
