@@ -21,10 +21,10 @@
 @prefix component: <http://doingbusiness.270a.info/component/> .
 @prefix dimension: <http://doingbusiness.270a.info/dimension/> .
 @prefix concept: <http://doingbusiness.270a.info/concept/> .
-@prefix concept-indicator: <http://doingbusiness.270a .info/concept/indicator/> .
-@prefix code <http://doingbusiness.270a.info/code/> .
-@prefeix code-indicator: <http://doingbusiness.270a.info/code/indicator/> .
-@prefix economy: <http://doingbuinsess.270a.info/code/economy/> .
+@prefix concept-indicator: <http://doingbusiness.270a.info/concept/indicator/> .
+@prefix code: <http://doingbusiness.270a.info/code/> .
+@prefix code-indicator: <http://doingbusiness.270a.info/code/indicator/> .
+@prefix economy: <http://doingbusiness.270a.info/code/economy/> .
 
 #
 # Ease of Doing Business dataset
@@ -45,7 +45,7 @@ structure:ease-of-doing-business
     qb:component component:rank ;
     qb:component component:economy ;
     qb:component component:refPeriod ;
-    qb:component component:indicator-ease-of-doing-business
+    qb:component component:indicator-ease-of-doing-business ;
     qb:component component:overall-dtf ;
 .
 
@@ -77,7 +77,7 @@ structure:dealing-with-construction-permits
     qb:component component:dtf ;
     qb:component component:economy ;
     qb:component component:refPeriod ;
-    qb:component component:indicator-dealing-with-construction-permits
+    qb:component component:indicator-dealing-with-construction-permits ;
     qb:component component:procedures ;
     qb:component component:days ;
     qb:component component:cost-in-percent-of-warehouse-value ;
@@ -87,8 +87,7 @@ code-indicator:dealing-with-construction-permits
     a skos:Concept ;
     skos:inScheme code:indicator ;
     skos:topConceptOf code:indicator ;
-    skos:definition "The indicator Dealing with Construction Permits determines how easy it is to comply with formalities to build a warehouse in a certain economy.
-"@en ;
+    skos:definition "The indicator Dealing with Construction Permits determines how easy it is to comply with formalities to build a warehouse in a certain economy."@en ;
 .
 
 #
@@ -112,7 +111,7 @@ structure:enforcing-contracts
     qb:component component:dtf ;
     qb:component component:economy ;
     qb:component component:refPeriod ;
-    qb:component component:indicator-enforcing-contracts
+    qb:component component:indicator-enforcing-contracts ;
     qb:component component:days ;
     qb:component component:cost-in-percent-of-claim ;
     qb:component component:procedures ;
@@ -147,7 +146,7 @@ structure:getting-credit
     qb:component component:dtf ;
     qb:component component:economy ;
     qb:component component:refPeriod ;
-    qb:component component:indicator-getting-credit
+    qb:component component:indicator-getting-credit ;
     qb:component component:strength-of-legal-rights-index ;
     qb:component component:depth-of-credit-information-index ;
     qb:component component:credit-registry-coverage-in-percent-of-adults ;
@@ -182,7 +181,7 @@ structure:getting-electricity
     qb:component component:dtf ;
     qb:component component:economy ;
     qb:component component:refPeriod ;
-    qb:component component:indicator-getting-electricity
+    qb:component component:indicator-getting-electricity ;
     qb:component component:procedures ;
     qb:component component:days ;
     qb:component component:cost-in-percent-of-income-per-capita ;
@@ -216,7 +215,7 @@ structure:paying-taxes
     qb:component component:dtf ;
     qb:component component:economy ;
     qb:component component:refPeriod ;
-    qb:component component:indicator-paying-taxes
+    qb:component component:indicator-paying-taxes ;
     qb:component component:payments-per-year ;
     qb:component component:hours-per-year ;
     qb:component component:profit-tax-in-percent ;
@@ -254,7 +253,7 @@ structure:protecting-minority-investors
     qb:component component:dtf ;
     qb:component component:economy ;
     qb:component component:refPeriod ;
-    qb:component component:indicator-protecting-minority-investors
+    qb:component component:indicator-protecting-minority-investors ;
     qb:component component:extent-of-disclosure-index ;
     qb:component component:extent-of-director-liability-index ;
     qb:component component:ease-of-shareholder-suits-index ;
@@ -294,7 +293,7 @@ structure:registering-property
     qb:component component:dtf ;
     qb:component component:economy ;
     qb:component component:refPeriod ;
-    qb:component component:indicator-registering-property
+    qb:component component:indicator-registering-property ;
     qb:component component:procedures ;
     qb:component component:days ;
     qb:component component:cost-in-percent-of-property-value ;
@@ -329,7 +328,7 @@ structure:resolving-insolvency
     qb:component component:dtf ;
     qb:component component:economy ;
     qb:component component:refPeriod ;
-    qb:component component:indicator-resolving-insolvency
+    qb:component component:indicator-resolving-insolvency ;
     qb:component component:years ;
     qb:component component:cost-in-percent-of-estate ;
     qb:component component:outcome ;
@@ -369,7 +368,7 @@ structure:starting-a-business
     qb:component component:dtf ;
     qb:component component:economy ;
     qb:component component:refPeriod ;
-    qb:component component:indicator-starting-a-business
+    qb:component component:indicator-starting-a-business ;
     qb:component component:procedures ;
     qb:component component:days ;
     qb:component component:cost-in-percent-of-income-per-capita ;
@@ -404,7 +403,7 @@ structure:trading-across-borders
     qb:component component:dtf ;
     qb:component component:economy ;
     qb:component component:refPeriod ;
-    qb:component component:indicator-trading-across-borders
+    qb:component component:indicator-trading-across-borders ;
     qb:component component:number-of-documents-to-export ;
     qb:component component:days-to-export ;
     qb:component component:cost-to-export-in-us-dollar-per-container ;
@@ -424,77 +423,89 @@ code-indicator:trading-across-borders
 
 code:indicator
     skos:prefLabel "Indicator Concept Scheme"@en ;
-    skos:hasTopConcept code-indicator:
-        ease-of-doing-business,
-        dealing-with-construction-permits,
-        enforcing-contracts,
-        getting-credit,
-        getting-electricity,
-        paying-taxes,
-        protecting-minority-investors,
-        registering-property,
-        resolving-insolvency,
-        starting-a-business,
-        trading-across-borders ;
+    skos:hasTopConcept
+        code-indicator:ease-of-doing-business,
+        code-indicator:dealing-with-construction-permits,
+        code-indicator:enforcing-contracts,
+        code-indicator:getting-credit,
+        code-indicator:getting-electricity,
+        code-indicator:paying-taxes,
+        code-indicator:protecting-minority-investors,
+        code-indicator:registering-property,
+        code-indicator:resolving-insolvency,
+        code-indicator:starting-a-business,
+        code-indicator:trading-across-borders ;
 .
 
 component:indicator-ease-of-doing-business
     a qb:ComponentSpecification ;
     qb:dimension code-indicator:ease-of-doing-business ;
-    
+.
+
 component:indicator-dealing-with-construction-permits
     a qb:ComponentSpecification ;
     qb:dimension code-indicator:dealing-with-construction-permits ;
+.
     
 component:indicator-enforcing-contracts
     a qb:ComponentSpecification ;
     qb:dimension code-indicator:enforcing-contracts ;
-    
+.
+
 component:indicator-getting-credit
     a qb:ComponentSpecification ;
     qb:dimension code-indicator:getting-credit ;
-    
+.
+
 component:indicator-getting-electricity
     a qb:ComponentSpecification ;
     qb:dimension code-indicator:getting-electricity ;
-    
+.
+
 component:indicator-paying-taxes
     a qb:ComponentSpecification ;
     qb:dimension code-indicator:paying-taxes ;
-    
+.
+
 component:indicator-protecting-minority-investors
     a qb:ComponentSpecification ;
     qb:dimension code-indicator:protecting-minority-investors ;
-    
+.
+
 component:indicator-registering-property
     a qb:ComponentSpecification ;
     qb:dimension code-indicator:registering-property ;
-    
+.
+
 component:indicator-resolving-insolvency
     a qb:ComponentSpecification ;
     qb:dimension code-indicator:resolving-insolvency ;
-    
+.
+
 component:indicator-starting-a-business
     a qb:ComponentSpecification ;
     qb:dimension code-indicator:starting-a-business ;
-    
+.
+
 component:indicator-trading-across-borders
     a qb:ComponentSpecification ;
     qb:dimension code-indicator:trading-across-borders ;
-    
+.
+
 component:economy
-    a qb:ComponentSpecification
+    a qb:ComponentSpecification ;
     qb:dimension sdmx-dimension:refArea ;
     .
 
 component:refPeriod
-    a qb:ComponentSpecification
+    a qb:ComponentSpecification ;
     qb:dimension sdmx-dimension:refPeriod ;
     .
 
 component:frequency
-    a qb:ComponentSpecification
-    qb:dimension sdmx-dimension:re 
+    a qb:ComponentSpecification ;
+    qb:dimension sdmx-dimension:re ;
+.
 
 component:overall-dtf
     a qb:ComponentSpecification ;
