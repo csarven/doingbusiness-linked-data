@@ -1,0 +1,12 @@
+<rdf:RDF>
+    <rdf:Description about="/config/ease-of-doing-business">
+        <dcterms:identifier>starting-a-business</dcterms:identifier>
+        <dcterms:title>Starting a Business</dcterms:title>
+        <skos:notation>1</skos:notation>
+    </rdf:Description>
+...
+
+
+</rdf:RDF>
+
+

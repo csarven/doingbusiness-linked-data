@@ -1,0 +1,44 @@
+/workflow
+    a opmv:WorkflowTemplate
+
+/workflow/transformation/csv-rdf
+    a ompv:WorkflowTemplateProcess
+    opmv:uses /workflow/data-csv
+    opmv:isStepOfTemplate /workflow
+
+/workflow/data-csv
+    a opmv:WorkflowTemplateArtifact , opmv:ParameterVariable
+    opmw:isParameterOfTemplate /workflow
+
+/workflow/data-rdf
+    a opmv:WorkflowTemplateArtifact , opmv:DataVariable
+    opmv:isGeneratedBy /workflow/transformation/csv-rdf
+    opmw:isParameterOfTemplate /workflow
+
+
+
+/account/transformation/csv-rdf/123456789
+    a opmv:WorkflowExecutionAccount
+    opmv:correspondsToTemplate /workflow
+
+#XXX: Possibly related to prov:Activity -- revisit -- maybe similar to a Unix PID
+#Consider using ISO 8601 timestamp with only numbers 2014-12-18T18:28:00.123456789+01:00:00 --> 20141218T182800123456789010000
+/process/transformation/csv-rdf/123456789
+    a opmv:WorkflowExecutionProcess
+    opmv:correspondsToTemplateProcess /workflow/transformation/csv-rdf
+    opmv:used /data/{topic}.{refPeriod}.csv
+    opmv:account /account/transformation/csv-rdf/123456789
+
+#XXX: topic can be either topic identifier e.g., 1, or human-readable name e.g., ease-of-doing-business, or something else out of thin air...  "ease-of-doing-business" is preferrable because it is explict vs. "1" can refer to anything. .. Use dcterms:identifier from config.rdf (the idea is to have the bash script look up the config.rdf to determine the identifiers..
+/data/{topic}.{refPeriod}.csv
+    a opmv:WorkflowExecutionArtifact
+    opmv:correspondsToTemplateArtifact /workflow/csv-rdf
+    opmv:account /account/transformation/csv-rdf/123456789
+
+/dataset/{topic}
+    a opmv:WorkflowExecutionArtifact
+    opmv:correspondsToTemplateArtifact /workflow/data-rdf
+    opmv:wasGeneratedBy /process/transformation/csv-rdf/123456789
+    opmv:account /account/transformation/csv-rdf/123456789
+
+
