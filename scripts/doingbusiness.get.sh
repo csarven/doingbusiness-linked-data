@@ -4,10 +4,96 @@
 #Number of topics to be downloaded
 numberOfTopics=11;
 
-#Start and end year
-#TODO: User input 
-startYear=2003;
-endYear=2014;
+#earliest year possible to download data
+earliestYearPossible=2004;
+
+clear;
+
+while true; do
+	while true; do
+		echo "\nEnter the year you want to start downloading Doing Business data (YYYY). Earliest year possible; $earliestYearPossible";
+		read -n 4 startYear
+
+		expression='^[0-9]+$';
+		if ! [[ $startYear =~ $expression ]] ; then
+			clear;
+			echo "Wrong input: This is not a 4 digits number...";
+		elif [[ $startYear < $earliestYearPossible ]] ; then
+			echo "\nYou entered a start year that is < 2004. Enter a start year >= 2004.";
+		else
+			break;
+		fi
+	done
+
+	echo "\nStart year for download: $startYear";
+
+	while true; do
+		clear;
+		echo "Start year: $startYear";
+		echo "Enter the year you want to end downloading Doing Business data (YYYY). If you would like to start again enter 'redo'.";
+		read -n 4 endYear
+
+		if [[ $endYear == "redo" ]]; then
+			endYear=0;
+			break;
+		fi
+		expression='^[0-9]+$';
+		if ! [[ $endYear =~ $expression ]] ; then
+			clear;
+			echo "Wrong input: This is not a 4 digits number...";
+		else
+			break;
+		fi
+	done
+
+	#If endYear < $startYear, start again
+	if [[ $endYear < $startYear ]]; then
+		if [[ $endYear = 0 ]]; then
+			clear;
+			echo "Redo...";
+		else
+		clear;
+		echo "\nThe end year ($endYear) is < the start year ($startYear). Please enter again...";
+		fi
+	else
+
+		isDownloadStarting=0;
+
+		while true; do
+			echo "\nStart year: $startYear";
+			echo "End year: $endYear";
+			echo "Would you like to start the download now? (y/n)";
+			echo "Enter 'y' to start the download or 'n' to restart.";
+			read -n 1 yesOrNo
+
+			case $yesOrNo in
+					y|Y)
+					isDownloadStarting=1;
+					break;
+						;;
+					n|N)
+					break;
+						;;
+					*)
+					clear;
+					echo "\nWrong input...";
+						;;
+				esac	
+		done
+
+		if [[ $isDownloadStarting == 1 ]]; then
+			break;
+		fi
+		clear;
+	fi
+done
+
+echo "End year for download: $endYear";
+
+#adjust years. This has to be done due to an "error" in the DB-"API"
+startYear=$(($startYear-1));
+endYear=$(($endYear-1));
+
 currentYear=$startYear;
 
 #create cofig file
@@ -39,7 +125,7 @@ do
 			#get topic name and refine it
 			topicName=$(head -1 ../data/topicId.$currentYear.$topicId.csv | cut -d ',' -f 5 | sed 's/"//g');
 			lowerCaseName=$(echo $topicName | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g');
-			echo $lowerCaseName;
+			echo "Downloaded $topicName";
 
 			#write to rdf file if lower case topic name exist
 			if [ -n "${lowerCaseName// }" ]; then
