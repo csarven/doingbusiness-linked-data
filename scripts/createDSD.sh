@@ -1,22 +1,24 @@
 #!/bin/bash
 #Creates dsd file for Doing Business
 
-#variables
-codeIndicators=(ease-of-doing-business dealing-with-construction-permits enforcing-contracts getting-credit getting-electricity paying-taxes protecting-minority-investors registering-property resolving-insolvency starting-a-business trading-across-borders);
-codeIndicatorLabels=("Ease of Doing Business" "Dealing with Construction Permits" "Enforcing Contracts" "Getting Credit" "Getting Electricity" "Paying Taxes" "Protecting Minority Investors" "Registering Property" "Resolving Insolvency" "Starting a Business" "Trading Across Borders");
-creators=("<http://renatostauffer.ch/>" "<http://csarven.ca/#i>");
+path="../data/config.rdf";
+
+if [ ! -f $path ]; then
+    >&2 echo "Error: the the following path and/or file does not exist: $path. Make sure to run previous workflow step first (doingbusiness.get.sh, doingbusiness.preprocessing.sh).";
+    exit 1;
+fi
+numberOfTopics=$(grep -c dcterms:identifier $path);
+codeIndicators=();
+codeIndicatorLabels=();
 licence="<http://creativecommons.org/publicdomain/zero/1.0/>";
-componentsEaseOfDoingBusiness=(overall-dtf);
-componentsDealingWithConstructionPermits=(procedures days cost-in-percent-of-warehouse-value);
-componentsEnforcingContraacts=(days cost-in-percent-of-claim procedures);
-componentsGettingCredit=(strength-of-legal-rights-index depth-of-credit-information-index credit-registry-coverage-in-percent-of-adults credit-bureau-coverage-in-percent-of-adults);
-componentsGettingElectricity=(procedures days cost-in-percent-of-income-per-capita);
-componentsPayingTaxes=(payments-per-year hours-per-year profit-tax-in-percent labor-tax-and-contributions-in-percent other-taxes-in-percent total-tax-rate-in-percent-of-profit);
-componentsProtectingMinorityInvestors=(extent-of-disclosure-index extent-of-director-liability-index ease-of-shareholder-suits-index extent-of-conflict-of-interest-regulation-index extent-of-shareholder-rights-index strength-of-governance-structure extent-of-corporate-transparency-index extent-of-shareholder-governance-index strength-of-minority-investor-protection-index);
-componentsRegisteringProperty=(procedures days cost-in-percent-of-property-value);
-componentsResolvingInsolvency=(years cost-in-percent-of-estate outcome recovery-rate commencement-of-proceedings-index management-of-debtor-assets-index reorganization-proceedings-index creditor-participation-index strength-of-insolvency-framework-index);
-componentsStartingABusiness=(procedures days cost-in-percent-of-income-per-capita paid-in-minimum-capital-in-percent-of-income-per-capita);
-componentsTradingAcrossBorders=(number-of-documents-to-export days-to-export cost-to-export-in-us-dollar-per-container cost-to-export-in-deflated-us-dollar-per-container number-of-documents-to-import days-to-import cost-to-import-in-us-dollar-per-container cost-to-import-in-deflated-us-dollar-per-container);
+
+for((i=1; i <= ${numberOfTopics}; i++));
+do
+    topic=$(xpath $path "//rdf:Description[$i]/dcterms:identifier/text()");
+    codeIndicators+=($topic);
+    label=$(xpath $path "//rdf:Description[$i]/dcterms:title/text()");
+    codeIndicatorLabels+=("$(xpath $path "//rdf:Description[$i]/dcterms:title/text()")");
+done
 
 echo "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -47,7 +49,6 @@ echo "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix economy: <http://doingbuinsess.270a.info/code/economy/> ." > meta.ttl;
 printf "\n" >> meta.ttl;
 
-
 #loop every indicator to create the DataStructureDefinition and the dataset
 arrayLength=${#codeIndicators[@]}
 
@@ -67,16 +68,16 @@ do
         then
             echo "    foaf:page <http://www.doingbusiness.org/data/exploretopics/${codeIndicators[$i]}> ;" >> meta.ttl;
         fi
-
+    #TODO: Generate Date, no hardcode
     echo '    dcterms:issued "2014-12-04T00:00:00Z"^^xsd:dateTime ;
-    dcterms:modified "2014-12-04T00:00:00Z"^^xsd:dateTime ;
     dcterms:creator
         <http://renatostauffer.ch/> ,
         <http://csarven.ca/#i> ;
     dcterms:license '"${licence}"' ;
     .'>> meta.ttl;
 
-    echo "structure:${codeIndicators[$i]}
+    echo "
+structure:${codeIndicators[$i]}
     a qb:DataStructureDefinition ;
     qb:component component:rank ;" >> meta.ttl;
 
@@ -168,7 +169,7 @@ do
     skos:inScheme code:indicator ;
     skos:topConceptOf code:indicator ;
     #TODO: Add definition
-    skos:definition \"\"@en ;
+    #skos:definition \"\"@en ;
 ." >> meta.ttl;
     printf "\n" >> meta.ttl;
 done
@@ -192,44 +193,60 @@ echo "." >> meta.ttl;
 printf "\n" >> meta.ttl;
 
 #create the components for the indicators
-for ((i=0; i<${arrayLength}; i++));
+arrayLenght=${#codeIndicators[@]};
+startDate=$(xpath $path "//rdf:Description/sdmx-dimension:refPeriod/text()");
+
+indicatorsToLoop=();
+for((i=0; i < ${arrayLenght}; i++));
 do
-    echo "component:indicator-${codeIndicators[$i]}
-    a qb:ComponentSpecification ;
-    qb:dimension code-indicator:${codeIndicators[$i]} ;
-    ." >> meta.ttl;
-done
-
-#Create components measures and dimensions
-
-echo "component:economy
+    if [ ${codeIndicators[$i]} == 'ease-of-doing-business' ];
+        then
+            echo "component:economy
     a qb:ComponentSpecification ;
     qb:dimension sdmx-dimension:refArea ;
-    .
+        .
 
 component:refPeriod
     a qb:ComponentSpecification ;
     qb:dimension sdmx-dimension:refPeriod ;
-    .
-" >> meta.ttl;
+        .
+    " >> meta.ttl;
 
-otherComponents=(overall-dtf rank dtf procedures days cost-in-percent-of-warehouse-value cost-in-percent-of-claim strength-of-legal-rights-index depth-of-credit-information-index credit-registry-coverage-in-percent-of-adults credit-bureau-coverage-in-percent-of-adults cost-in-percent-of-income-per-capita payments-per-year hours-per-year profit-tax-in-percent labor-tax-and-contributions-in-percent other-taxes-in-percent total-tax-rate-in-percent-of-profit extent-of-disclosure-index extent-of-director-liability-index ease-of-shareholder-suits-index extent-of-conflict-of-interest-regulation-index extent-of-shareholder-rights-index strength-of-governance-structure extent-of-corporate-transparency-index extent-of-shareholder-governance-index strength-of-minority-investor-protection-index cost-in-percent-of-property-value years cost-in-percent-of-estate outcome recovery-rate commencement-of-proceedings-index management-of-debtor-assets-index reorganization-proceedings-index creditor-participation-index strength-of-insolvency-framework-index paid-in-minimum-capital-in-percent-of-income-per-capita number-of-documents-to-export days-to-export cost-to-export-in-us-dollar-per-container cost-to-export-in-deflated-us-dollar-per-container number-of-documents-to-import days-to-import cost-to-import-in-us-dollar-per-container cost-to-import-in-deflated-us-dollar-per-container );
+    if [ ! -f "../data/${codeIndicators[0]}.$startDate.refined.csv" ]; then
+        >&2 echo "Error: the the following path and/or file does not exist: ../data/${codeIndicators[0]}.$startDate.refined.csv. Make sure to run previous workflow step first (doingbusiness.get.sh, doingbusiness.preprocessing.sh).";
+        exit 1;
+    fi
+    
+    indicators=$(head -n 1 ../data/${codeIndicators[0]}.$startDate.refined.csv | cut -d',' -f3-4 | sed 's/,/ /g');
+    indicatorsToLoop+=($indicators);
 
-otherComponentsLength=${#otherComponents[@]};
+        else
+                if [ ! -f "../data/${codeIndicators[0]}.$startDate.refined.csv" ]; then
+                    >&2 echo "Error: the the following path and/or file does not exist: ../data/${codeIndicators[0]}.$startDate.refined.csv. Make sure to run previous workflow step first (doingbusiness.get.sh, doingbusiness.preprocessing.sh).";
+                    exit 1;
+                fi
+                
+                indicators=$(head -n 1 ../data/${codeIndicators[$i]}.$startDate.refined.csv | cut -d',' -f5- | sed 's/,/ /g');
+                indicatorsToLoop+=($indicators);
+    fi
+done
 
-for ((i=0; i<${otherComponentsLength}; i++));
+sortedUniqueIndicators+=($(echo "${indicatorsToLoop[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' '));
+
+sortedUniqueIndicatorsLength=${#sortedUniqueIndicators[@]};
+
+for ((i=0; i<${sortedUniqueIndicatorsLength}; i++));
 do
-    echo "component:${otherComponents[$i]}
+    echo "component:${sortedUniqueIndicators[$i]}
     a qb:ComponentSpecification ;
-    qb:measure measure:${otherComponents[$i]} ;
+    qb:measure measure:${sortedUniqueIndicators[$i]} ;
     ." >> meta.ttl;
     printf "\n" >> meta.ttl;
 
-    echo "measure:${otherComponents[$i]}
+    echo "measure:${sortedUniqueIndicators[$i]}
     a qb:MeasureProperty ;
     rdfs:label \"\"@en ;
     #TODO: Add range
-    rdfs:range \"Has no range yet.\"@en ;
     ." >> meta.ttl;
     printf "\n" >> meta.ttl;
 done
