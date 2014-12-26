@@ -194,7 +194,7 @@ printf "\n" >> meta.ttl;
 
 #create the components for the indicators
 arrayLenght=${#codeIndicators[@]};
-startDate=$(xpath $path "//rdf:Description/sdmx-dimension:refPeriod/text()");
+startDate=$(xpath $path "//rdf:Description[1]/sdmx-dimension:refPeriod/text()");
 
 indicatorsToLoop=();
 for((i=0; i < ${arrayLenght}; i++));
