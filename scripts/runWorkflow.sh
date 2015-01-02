@@ -1,3 +1,7 @@
+#!/bin/bash
+#Author: Renato Stauffer
+#Author URL: http://renatostauffer.ch
+#Date: 2014-12-21
 #Abstract workflow file
 . ./config.sh
 
@@ -13,4 +17,4 @@ dc:creator <http://renatostauffer.ch> ;
 printf "\n" >> $abstractWorkflowDescription;
 . ./doingbusiness.get.sh
 . ./doingbusiness.preprocessing.sh
-#. ./doingbusiness.mapping.sh
+. ./doingbusiness.mapping.sh
