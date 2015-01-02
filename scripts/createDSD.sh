@@ -1,23 +1,39 @@
 #!/bin/bash
+#Author: Renato Stauffer
+#Author URL: http://renatostauffer.ch
+#Date: 2014-12-21
 #Creates dsd file for Doing Business
 
 path="../data/config.rdf";
+
+#grab the first year
+startDate=$(xpath -e "//rdf:Description[1]/sdmx-dimension:refPeriod/text()" $path);
+echo "First year = $startDate";
 
 if [ ! -f $path ]; then
     >&2 echo "Error: the the following path and/or file does not exist: $path. Make sure to run previous workflow step first (doingbusiness.get.sh, doingbusiness.preprocessing.sh).";
     exit 1;
 fi
-numberOfTopics=$(grep -c dcterms:identifier $path);
+
+numberOfTopics=$(grep -c "Description rdf:about=" $path);
+
 codeIndicators=();
 codeIndicatorLabels=();
 licence="<http://creativecommons.org/publicdomain/zero/1.0/>";
 
-for((i=1; i <= ${numberOfTopics}; i++));
+index=0;
+for((i=0; i <= ${numberOfTopics}; i++));
 do
-    topic=$(xpath $path "//rdf:Description[$i]/dcterms:identifier/text()");
-    codeIndicators+=($topic);
-    label=$(xpath $path "//rdf:Description[$i]/dcterms:title/text()");
-    codeIndicatorLabels+=("$(xpath $path "//rdf:Description[$i]/dcterms:title/text()")");
+    let index+=1;
+    topic=$(xpath -e "//rdf:Description[$index]/dcterms:identifier/text()" $path);
+    if [ ! -z "$topic" ]; then
+        codeIndicators+=($topic);
+    fi
+
+    label=("$(xpath -e "//rdf:Description[$index]/dcterms:title/text()" $path)");
+    if [ ! -z "$label" ]; then
+        codeIndicatorLabels+=("$label");
+    fi
 done
 
 echo "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -68,8 +84,9 @@ do
         then
             echo "    foaf:page <http://www.doingbusiness.org/data/exploretopics/${codeIndicators[$i]}> ;" >> meta.ttl;
         fi
-    #TODO: Generate Date, no hardcode
-    echo '    dcterms:issued "2014-12-04T00:00:00Z"^^xsd:dateTime ;
+
+    currentTime=`date --utc +%FT%TZ`;
+    echo '    dcterms:issued "'"$currentTime"'"^^xsd:dateTime ;
     dcterms:creator
         <http://renatostauffer.ch/> ,
         <http://csarven.ca/#i> ;
@@ -90,77 +107,23 @@ structure:${codeIndicators[$i]}
     qb:component component:refPeriod ;
     qb:component component:indicator-${codeIndicators[$i]} ;" >> meta.ttl;
 
-    #loop through each component of each code-indicator
-    case "${codeIndicators[$i]}" in 
-        dealing-with-construction-permits)
-            for component in "${componentsDealingWithConstructionPermits[@]}"
-                do
-                    echo "    qb:component component:$component ;" >> meta.ttl;
-                done
-            ;;
-        enforcing-contracts)
-            for component in "${componentsEnforcingContraacts[@]}"
-                do
-                    echo "    qb:component component:$component ;" >> meta.ttl;
-                done
-            ;;
-        getting-credit)
-            for component in "${componentsGettingCredit[@]}"
-                do
-                    echo "    qb:component component:$component ;" >> meta.ttl;
-                done
-            ;;
-        getting-electricity)
-            for component in "${componentsGettingElectricity[@]}"
-                do
-                    echo "    qb:component component:$component ;" >> meta.ttl;
-                done
-            ;;
-        paying-taxes)
-            for component in "${componentsPayingTaxes[@]}"
-                do
-                    echo "    qb:component component:$component ;" >> meta.ttl;
-                done
-            ;;
-        protecting-minority-investors)
-            for component in "${componentsProtectingMinorityInvestors[@]}"
-                do
-                    echo "    qb:component component:$component ;" >> meta.ttl;
-                done
-            ;;
-        registering-property)
-            for component in "${componentsRegisteringProperty[@]}"
-                do
-                    echo "    qb:component component:$component ;" >> meta.ttl;
-                done
-            ;;
-        resolving-insolvency)
-            for component in "${componentsResolvingInsolvency[@]}"
-                do
-                    echo "    qb:component component:$component ;" >> meta.ttl;
-                done
-            ;;
-        starting-a-business)
-            for component in "${componentsStartingABusiness[@]}"
-                do
-                    echo "    qb:component component:$component ;" >> meta.ttl;
-                done
-            ;;
-        trading-across-borders)
-            for component in "${componentsTradingAcrossBorders[@]}"
-                do
-                    echo "    qb:component component:$component ;" >> meta.ttl;
-                done
-            ;;
-        ease-of-doing-business)
-            for component in "${componentsEaseOfDoingBusiness[@]}"
-                do
-                    echo "    qb:component component:$component ;" >> meta.ttl;
-                done
-            ;;            
-        *) echo "Error: This code-indicator does not exist..." >> meta.ttl;
-            ;;    
-    esac
+    if [ ${codeIndicators[$i]} != ease-of-doing-business ]
+    then
+        #Get the rest of the components from the csv header
+        componentsToLoop=$(head -n 1 ../data/${codeIndicators[$i]}.$startDate.preprocessed.csv | cut -d',' -f8- | sed 's/,/ /g');
+        components=();
+        components+=($componentsToLoop);
+
+        numberOfComponents=${#components[@]};
+
+        for ((j=0; j<${numberOfComponents}; j++));
+        do
+            echo "    qb:component component:${components[$j]} ;" >> meta.ttl;
+        done
+    else
+        echo "    qb:component component:oveall-dtf ;" >> meta.ttl;
+    fi
+
     echo "." >> meta.ttl;
     printf "\n" >> meta.ttl;
 
@@ -178,6 +141,7 @@ done
 echo "code:indicator
     skos:prefLabel \"Indicator Concept Scheme\"@en ;
     skos:hasTopConcept" >> meta.ttl;
+
 #loop through every code-indicator and add it to skos:hasTopConcept.
 for ((i=0; i<${arrayLength}; i++));
 do
@@ -193,8 +157,8 @@ echo "." >> meta.ttl;
 printf "\n" >> meta.ttl;
 
 #create the components for the indicators
+echo "Creating components for the indicators...";
 arrayLenght=${#codeIndicators[@]};
-startDate=$(xpath $path "//rdf:Description[1]/sdmx-dimension:refPeriod/text()");
 
 indicatorsToLoop=();
 for((i=0; i < ${arrayLenght}; i++));
@@ -212,21 +176,20 @@ component:refPeriod
         .
     " >> meta.ttl;
 
-    if [ ! -f "../data/${codeIndicators[0]}.$startDate.refined.csv" ]; then
-        >&2 echo "Error: the the following path and/or file does not exist: ../data/${codeIndicators[0]}.$startDate.refined.csv. Make sure to run previous workflow step first (doingbusiness.get.sh, doingbusiness.preprocessing.sh).";
+    if [ ! -f "../data/${codeIndicators[0]}.$startDate.preprocessed.csv" ]; then
+        >&2 echo "Error: the the following path and/or file does not exist: ../data/${codeIndicators[0]}.$startDate.preprocessed.csv. Make sure to run previous workflow step first (doingbusiness.get.sh, doingbusiness.preprocessing.sh).";
         exit 1;
     fi
     
-    indicators=$(head -n 1 ../data/${codeIndicators[0]}.$startDate.refined.csv | cut -d',' -f3-4 | sed 's/,/ /g');
+    indicators=$(head -n 1 ../data/${codeIndicators[0]}.$startDate.preprocessed.csv | cut -d',' -f3-4 | sed 's/,/ /g');
     indicatorsToLoop+=($indicators);
-
         else
-                if [ ! -f "../data/${codeIndicators[0]}.$startDate.refined.csv" ]; then
-                    >&2 echo "Error: the the following path and/or file does not exist: ../data/${codeIndicators[0]}.$startDate.refined.csv. Make sure to run previous workflow step first (doingbusiness.get.sh, doingbusiness.preprocessing.sh).";
+                if [ ! -f "../data/${codeIndicators[0]}.$startDate.preprocessed.csv" ]; then
+                    >&2 echo "Error: the the following path and/or file does not exist: ../data/${codeIndicators[0]}.$startDate.preprocessed.csv. Make sure to run previous workflow step first (doingbusiness.get.sh, doingbusiness.preprocessing.sh).";
                     exit 1;
                 fi
                 
-                indicators=$(head -n 1 ../data/${codeIndicators[$i]}.$startDate.refined.csv | cut -d',' -f5- | sed 's/,/ /g');
+                indicators=$(head -n 1 ../data/${codeIndicators[$i]}.$startDate.preprocessed.csv | cut -d',' -f5- | sed 's/,/ /g');
                 indicatorsToLoop+=($indicators);
     fi
 done
