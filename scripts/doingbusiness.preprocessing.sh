@@ -92,7 +92,7 @@ for file in $files ; do
 	filename="${filename%.*}"
 
 	echo "Refining $filename...";
-	sed "1s/(//g" $file.temp2.refined.csv | sed "1s/)//g" | sed "1s/ number//g" | sed "1s/ /-/g"  | sed "1s/time-//g" | sed "1s/%/in-percent/g" | sed 's/"//g' | sed 's/,,//g' | sed 's/\.\.//g' | sed 's/, /XXX/g' | sed '1s/[0-9]//g' | sed "1s/--\.//g" | sed '1s/--//g' | sed '1s/outcomeas-piecemeal-sale-andas-going-concern/outcome/g' | sed "1s/'//g" | sed '1s/to-export-days/days-to-export/' | sed '1s/to-import-days/days-to-import/' | sed "1s/us\\$/in-us-dollar/g" | sed "1s/deflated-us\\$/in-deflated-us-dollar/g" | sed "1s/min\./minimum/" >> ../data/$filename.refined.csv
+	sed "1s/(//g" $file.temp2.refined.csv | sed "1s/)//g" | sed "1s/ number//g" | sed "1s/ /-/g"  | sed "1s/time-//g" | sed "1s/%/in-percent/g" | sed 's/"//g' | sed 's/,,//g' | sed 's/\.\.//g' | sed 's/, /XXX/g' | sed 's/no practice//g' | sed '1s/[0-9]//g' | sed "1s/--\.//g" | sed '1s/--//g' | sed '1s/outcomeas-piecemeal-sale-andas-going-concern/outcome/g' | sed "1s/'//g" | sed '1s/to-export-days/days-to-export/' | sed '1s/to-import-days/days-to-import/' | sed "1s/us\\$/in-us-dollar/g" | sed "1s/deflated-us\\$/in-deflated-us-dollar/g" | sed "1s/min\./minimum/" >> ../data/$filename.refined.csv
 
 	rm $file.temp2.refined.csv;
 
@@ -110,7 +110,7 @@ done
 
 #refine country codes - mask ',' in country labels as XXX
 echo "Refine country codes";
-sed 1d ../data/countryCodes.csv | sed "s/\"//g" | sed "s/, /XXX/g"  > ../data/countryCodes.refined.csv;
+sed 1d ../data/countryCodes.csv | sed "s/\"//g" | sed "s/, /XXX/g" | awk -F"," '{print $1 "," $3 "," $4}' > ../data/countryCodes.refined.csv;
 
 #remove CRLF line terminators from data
 dos2unix ../data/countryCodes.refined.csv;
@@ -118,7 +118,7 @@ dos2unix ../data/countryCodes.refined.csv;
 #sort country codes
 echo "Sort country codes";
 head -1 ../data/countryCodes.refined.csv > ../data/countryCodes.sorted.csv;
-sed 1d ../data/countryCodes.refined.csv | sort -k 3 -t',' >> ../data/countryCodes.sorted.csv;
+sed 1d ../data/countryCodes.refined.csv | env LC_COLLATE=C sort -k 3 -t',' >> ../data/countryCodes.sorted.csv;
 
 #remove unnecessary stuff
 rm ../data/countryCodes.refined.csv; 
@@ -131,7 +131,7 @@ echo "Refine codes from Doing Business";
 sed 1d ../data/DB-codes.csv | sed "s/\"//g" | sed "s/, /XXX/g" | awk -F"," '{print $1 "," $3}' | sed "s/ ,/,/g" > ../data/DB-codes.refined.csv;
 
 #remove unnecessary stuff
-rm ../data/DB-codes.csv; 
+rm ../data/DB-codes.csv;
 
 #remove CRLF line terminators from data
 dos2unix ../data/DB-codes.refined.csv;
@@ -145,11 +145,11 @@ rm ../data/DB-codes.refined.csv;
 
 #first join
 echo "Joining...";
-join -t',' -1 1 -2 3 -o 0 1.2 2.1 ../data/DB-codes.sorted.csv ../data/countryCodes.sorted.csv | awk -F"," '{print $2 "," $3}' > ../data/../data/mergedCodes.csv;
+join -t',' -1 1 -2 3 -o 0 1.2 2.2 ../data/DB-codes.sorted.csv ../data/countryCodes.sorted.csv | awk -F"," '{print $2 "," $3}' > ../data/../data/mergedCodes.csv;
 
 #remove unncessary stuff
-rm ../data/DB-codes.sorted.csv;
-rm ../data/countryCodes.sorted.csv;
+#rm ../data/DB-codes.sorted.csv;
+#rm ../data/countryCodes.sorted.csv;
 
 #Add countries with sub-economies
 echo "Insert economies with sub-economies";
@@ -192,16 +192,23 @@ for file in $sortedFiles ; do
 	filename=$(basename $file);
 	filename="${filename%.*}";
 	newname=`echo "$filename" | sed -e 's/sorted/preprocessed/'`; 
-	echo $newname;
 	head -1 $file > ../data/$newname.csv;
 	sed 1d $file > ../data/temp.csv;
-	LANG=en_EN join -t',' -1 1 -2 1 ../data/merged.sorted.codes.csv ../data/temp.csv >> ../data/$newname.csv;
-	#rm ../data/temp.csv;
-	#rm $file; 
+	LANG=en_EN join -t',' -1 1 -2 1 ../data/merged.sorted.codes.csv ../data/temp.csv >> ../data/$filename.tempjoin.csv;
+	cat ../data/$filename.tempjoin.csv | awk -F, '{print "\""$1"\""}' | sed "s/XXX/, /g" > ../data/tempFirstLine.csv;
+	cut -d',' -f2- ../data/$filename.tempjoin.csv > ../data/tempOtherLines.csv;
+	paste -d',' ../data/tempFirstLine.csv ../data/tempOtherLines.csv >> ../data/$newname.csv;
+	
+	rm ../data/$filename.tempjoin.csv;
+	rm ../data/tempFirstLine.csv;
+	rm ../data/tempOtherLines.csv;
+	rm ../data/temp.csv;
+	#rm $file;
+
 done
 
 #remove unnecessary stuff
-#rm ../data/merged.sorted.codes.csv;
+rm ../data/*2*sorted.csv;
  
 #describe workflow processes
 ##echo "<${workflowTemplate}preprocessing/refine-csv-file>
