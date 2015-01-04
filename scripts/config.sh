@@ -7,30 +7,26 @@
 agency="doingbusiness";
 agencyLabel="Doing Business";
 agencyURL="http://www.doingbusiness.org/";
-agent="Renato Stauffer";
+agent="http://renatostauffer.ch";
 data="../data";
-namespace="http://$agency.270a.info/";
+namespace="http://$agency.270a.info";
+workflowConfig="../data/config.execution.rdf";
 
-workflowTemplate="${namespace}workflow/";
-workflowAccount="${namespace}account/";
+workflowTemplate="${namespace}/workflow";
+workflowAccount="${namespace}/account";
 
-#function for a timestamp
-timestamp(){
-	date +"%Y%m%dT%H%M%S%N010000";
+addWorkflowArtifact() {
+	name="$1"
+	artifact="$2"
+	sed "/<\/rdf:RDF>/d" $workflowConfig > temp.rdf;
+ 	cat temp.rdf > $workflowConfig;
+ 	rm temp.rdf;
+ 	echo "<rdf:Description rdf:about=\"/config/WorkflowExecutionArtifacts\">
+            <opmw:WorkflowExecutionArtifact name=\"$name\">$artifact</opmw:WorkflowExecutionArtifact>
+    	</rdf:Description>\n" >> $workflowConfig;
+ 	echo "</rdf:RDF>" >> $workflowConfig;
 }
 
 #create workflow description files and paths
-echo "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix prov: <http://www.w3.org/ns/prov#> . 
-@prefix opmv: <http://purl.org/net/opmv/ns#> . 
-@prefix opmw: <http://www.opmw.org/ontology/> ." > ../data/workflowExecutionDescription.ttl;
-
-echo "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix prov: <http://www.w3.org/ns/prov#> . 
-@prefix opmv: <http://purl.org/net/opmv/ns#> . 
-@prefix opmw: <http://www.opmw.org/ontology/> ." > ../data/abstractWorkflowDescription.ttl;
-
 workflowExecutionDescription="../data/workflowExecutionDescription.ttl";
 abstractWorkflowDescription="../data/abstractWorkflowDescription.ttl";

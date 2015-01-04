@@ -3,6 +3,7 @@
 #Author URL: http://renatostauffer.ch
 #Date: 2014-12-21
 #doingbusiness.preprocessing.sh
+. ./config.sh
 
 files=../data/*.2*.csv;
 htmlFiles=../data/*.2*.html;
@@ -21,8 +22,6 @@ path="../data/config.rdf";
 #get starting and ending year
 currentYear=$(xpath -e "//rdf:Description[1]/sdmx-dimension:refPeriod/text()" $path);
 endYear=$(xpath -e "//rdf:Description[2]/sdmx-dimension:refPeriod/text()" $path);
-echo $endYear;
-echo $currentYear;
 
 #open rdf for more info
 sed "/<\/rdf:RDF>/d" ../data/config.rdf > temp.rdf;
@@ -38,8 +37,12 @@ do
 			let "topicId=$i+1";
 
 			#converte to csv
+			if [ ! -s ../data/$currentYear.$topicId.html ] ; then
+  				rm ../data/$currentYear.$topicId.html;
+  				continue;
+			fi
+			echo "converting";
 			ssconvert ../data/$currentYear.$topicId.html ../data/$currentYear.$topicId.csv;
-
 			#get topic name and refine it
 			topicName=$(head -1 ../data/$currentYear.$topicId.csv | cut -d ',' -f 5 | sed 's/"//g');
 			lowerCaseName=$(echo $topicName | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g');
@@ -56,12 +59,48 @@ do
             fi
             mv ../data/$currentYear.$topicId.csv ../data/$lowerCaseName.$currentYear.csv;
 
+            #Describe workflow execution - Convert html to csv
+ 			date=`date +%Y%m%dT%H%M%S%Z`;
+ 			artifact=$(xpath -e "//opmw:WorkflowExecutionArtifact[@name='$topicId-$currentYear']/text()" $workflowConfig);
+ 			account=$(xpath -e "//rdf:Description[1]/opmo:account/text()" $workflowConfig);
+ 			echo "<$namespace/process/preprocessing/html-csv/$date>
+ 			a opmw:WorkflowExecutionProcess ;
+ 			opmw:correspondsToTemplateProcess <$workflowTemplate/preprocessing/html-csv>;
+ 			opmv:used <$artifact> ;
+ 			opmv:wasControlledBy <$agent> ;
+ 			opmo:account <$account> ;
+ 			.
+ 			" >> $workflowExecutionDescription;
+ 			echo "
+ 			<$namespace/data/$lowerCaseName-$currentYear/$date>
+ 			a opmw:WorkflowExecutionArtifact ;
+ 			opmo:account <$account> ;
+ 			opmv:wasGeneratedBy <$namespace/process/preprocessing/html-csv/$date> ;
+ 			opmw:correspondsToTemplateArtifact <$workflowTemplate/dataset-csv> ;
+ 			.
+ 			" >> $workflowExecutionDescription;
+ 			echo "done...";
+            addWorkflowArtifact $lowerCaseName-$currentYear $namespace/data/$lowerCaseName-$currentYear/$date
 		done
 
 	#first run over
 	firstLoopRun=0;
 
 done 
+
+#Describe abstract workflow process - convert html to csv
+echo "<$workflowTemplate/preprocessing/html-csv> a opmw:WorkflowTemplateProcess ;
+opmw:uses <$workflowTemplate/dataset-html> ;
+opmw:isStepOfTemplate <$workflowTemplate> ;
+." >> $abstractWorkflowDescription;
+
+echo "<$workflowTemplate/dataset-csv>
+a opmw:WorkflowTemplateArtifact, opmw:DataVariable ;
+opmw:isGeneratedBy <$workflowTemplate/preprocessing/html-csv> ;
+opmw:correspondsToTemplate <$workflowTemplate> ;
+.
+" >> $abstractWorkflowDescription;
+
 
 ##finish rdf/xml 
 echo "<rdf:Description rdf:about=\"/config/ease-of-doing-business\">
@@ -108,6 +147,7 @@ for file in $files ; do
 	rm ../data/$filename.refined.csv;
 done
 
+#Sorting Codes
 #refine country codes - mask ',' in country labels as XXX
 echo "Refine country codes";
 sed 1d ../data/countryCodes.csv | sed "s/\"//g" | sed "s/, /XXX/g" | awk -F"," '{print $1 "," $3 "," $4}' > ../data/countryCodes.refined.csv;
@@ -121,7 +161,7 @@ head -1 ../data/countryCodes.refined.csv > ../data/countryCodes.sorted.csv;
 sed 1d ../data/countryCodes.refined.csv | env LC_COLLATE=C sort -k 3 -t',' >> ../data/countryCodes.sorted.csv;
 
 #remove unnecessary stuff
-rm ../data/countryCodes.refined.csv; 
+rm ../data/countryCodes.refined.csv;
 
 #convert DB codes
 ssconvert DB-codes.xlsx ../data/DB-codes.csv;
@@ -148,8 +188,8 @@ echo "Joining...";
 join -t',' -1 1 -2 3 -o 0 1.2 2.2 ../data/DB-codes.sorted.csv ../data/countryCodes.sorted.csv | awk -F"," '{print $2 "," $3}' > ../data/../data/mergedCodes.csv;
 
 #remove unncessary stuff
-#rm ../data/DB-codes.sorted.csv;
-#rm ../data/countryCodes.sorted.csv;
+rm ../data/DB-codes.sorted.csv;
+rm ../data/countryCodes.sorted.csv;
 
 #Add countries with sub-economies
 echo "Insert economies with sub-economies";
@@ -191,7 +231,8 @@ for file in $sortedFiles ; do
 
 	filename=$(basename $file);
 	filename="${filename%.*}";
-	newname=`echo "$filename" | sed -e 's/sorted/preprocessed/'`; 
+	newname=`echo "$filename" | sed -e 's/sorted/preprocessed/'`;
+	referenceForWorkflowDescpription=`echo "$filename" | sed -e 's/\.sorted//' | sed -e 's/\./-/'`;
 	head -1 $file > ../data/$newname.csv;
 	sed 1d $file > ../data/temp.csv;
 	LANG=en_EN join -t',' -1 1 -2 1 ../data/merged.sorted.codes.csv ../data/temp.csv >> ../data/$filename.tempjoin.csv;
@@ -205,26 +246,45 @@ for file in $sortedFiles ; do
 	rm ../data/temp.csv;
 	#rm $file;
 
+	#describe workflow processes
+	#Workflow description - Merge Data
+	date=`date +%Y%m%dT%H%M%S%Z`;
+	artifactCountryCodes=$(xpath -e "//opmw:WorkflowExecutionArtifact[@name='countryCodes']/text()" $workflowConfig);
+	artifactDatasets=$(xpath -e "//opmw:WorkflowExecutionArtifact[@name='$referenceForWorkflowDescpription']/text()" $workflowConfig);
+	account=$(xpath -e "//rdf:Description[1]/opmo:account/text()" $workflowConfig);
+	echo "<$namespace/process/preprocessing/merge-data/$date>
+	a opmw:WorkflowExecutionProcess ;
+	opmw:correspondsToTemplateProcess <$workflowTemplate/preprocessing/preprocessed-data> ;
+	opmv:used <$artifactCountryCodes>, <$artifactDatasets> ; 
+	opmv:wasControlledBy <$agent> ;
+	opmo:account <$account> ;
+	.
+	" >> $workflowExecutionDescription;
+
+	referenceForWorkflowDescpription+="-preprocessed"; 
+	echo "
+	<$namespace/data/$referenceForWorkflowDescpription/$date>
+	a opmw:WorkflowExecutionArtifact ;
+	opmo:account <$account> ;
+	opmv:wasGeneratedBy <$namespace/process/preprocessing/merge-data/$date> ;
+	opmw:correspondsToTemplateArtifact <$workflowTemplate/preprocessed-data>;
+	.
+	" >> $workflowExecutionDescription;
+
+	addWorkflowArtifact $referenceForWorkflowDescpription $namespace/data/$referenceForWorkflowDescpription/$date
 done
 
 #remove unnecessary stuff
 rm ../data/*2*sorted.csv;
- 
-#describe workflow processes
-##echo "<${workflowTemplate}preprocessing/refine-csv-file>
- #   a opmw:WorkflowTemplateProcess;
- #   opmw:isStepOfTemplate <$workflowTemplate> ;
- #   p-plan:isPrecededBy <${workflowTemplate}extraction/convert-excel-csv> ;
- #   #opmw:uses <????> ;
- #   ." >> $abstractWorkflowDescription;
-#
-#echo "<${workflowAccount}preprocessing/refine-csv-file>
-#a opmw:WorkflowExecutionProcess ; 
-#opmw:correspondsToTemplateProcess <${workflowTemplate}preprocessing/refine-csv-file> ;
-##opmw:used <????> ;
-#opmw:wasControlledBy $agent ;
-#opmw:account $workflowAccount ;
-#opmv:wasTriggeredBy <${workflowAccount}extraction/convert-excel-to-csv> ;
-#.
-#" >> $workflowExecutionDescription;
-#
+
+echo "<$workflowTemplate/preprocessing/preprocessed-data> a opmw:WorkflowTemplateProcess ;
+opmw:uses <$workflowTemplate/country-codes>, <$workflowTemplate/dataset-csv> ;
+opmw:isStepOfTemplate <$workflowTemplate> ;
+." >> $abstractWorkflowDescription;
+
+echo "<$workflowTemplate/preprocessed-data>
+a opmw:WorkflowTemplateArtifact, opmw:DataVariable ;
+opmw:isGeneratedBy <$workflowTemplate/preprocessing/merge-data>;
+opmw:correspondsToTemplate <$workflowTemplate> ;
+.
+" >> $abstractWorkflowDescription;
