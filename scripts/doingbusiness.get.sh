@@ -5,7 +5,6 @@
 #Create config xml
 
 . ./config.sh
-. ./common.sh
 
 #Number of topics to be downloaded
 numberOfTopics=11;

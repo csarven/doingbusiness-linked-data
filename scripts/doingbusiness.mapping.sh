@@ -3,7 +3,6 @@
 #Author URL: http://renatostauffer.ch/
 #Mdoingbusiness.mapping.sh
 . ./config.sh
-. ./common.sh
 
 filesTarql=../data/*mapping.*.2*.txt
 filesPreprocessed=../data/*.preprocessed.csv
