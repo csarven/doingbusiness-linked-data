@@ -1,13 +1,13 @@
 #!/bin/bash
 #Author: Renato Stauffer
-#Author URL: http://renatostauffer.ch
+#Author URL: http://renatostauffer.ch/
 #Date: 2014-12-21
 
 #Global variables
 agency="doingbusiness";
 agencyLabel="Doing Business";
 agencyURL="http://www.doingbusiness.org/";
-agent="http://renatostauffer.ch";
+agent="http://renatostauffer.ch/#i";
 data="../data";
 namespace="http://$agency.270a.info";
 workflowConfig="../data/config.execution.rdf";

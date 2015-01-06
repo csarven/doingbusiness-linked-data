@@ -1,6 +1,6 @@
 #!/bin/bash
 #Author: Renato Stauffer
-#Author URL: http://renatostauffer.ch
+#Author URL: http://renatostauffer.ch/
 #Date: 2014-12-21
 #Creates dsd file for Doing Business
 
@@ -88,7 +88,7 @@ do
     currentTime=`date --utc +%FT%TZ`;
     echo '    dcterms:issued "'"$currentTime"'"^^xsd:dateTime ;
     dcterms:creator
-        <http://renatostauffer.ch/> ,
+        <http://renatostauffer.ch/#i> ,
         <http://csarven.ca/#i> ;
     dcterms:license '"${licence}"' ;
     .'>> meta.ttl;

@@ -1,6 +1,6 @@
 #!/bin/bash
 #Author: Renato Stauffer
-#Author URL: http://renatostauffer.ch
+#Author URL: http://renatostauffer.ch/
 #Date: 2014-12-21
 #Create config xml
 
