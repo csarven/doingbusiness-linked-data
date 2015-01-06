@@ -15,18 +15,6 @@ workflowConfig="../data/config.execution.rdf";
 workflowTemplate="${namespace}/workflow";
 workflowAccount="${namespace}/account";
 
-addWorkflowArtifact() {
-	name="$1"
-	artifact="$2"
-	sed "/<\/rdf:RDF>/d" $workflowConfig > temp.rdf;
- 	cat temp.rdf > $workflowConfig;
- 	rm temp.rdf;
- 	echo "<rdf:Description rdf:about=\"/config/WorkflowExecutionArtifacts\">
-            <opmw:WorkflowExecutionArtifact name=\"$name\">$artifact</opmw:WorkflowExecutionArtifact>
-    	</rdf:Description>\n" >> $workflowConfig;
- 	echo "</rdf:RDF>" >> $workflowConfig;
-}
-
 #create workflow description files and paths
 workflowExecutionDescription="../data/workflowExecutionDescription.ttl";
 abstractWorkflowDescription="../data/abstractWorkflowDescription.ttl";

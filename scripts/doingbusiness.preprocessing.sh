@@ -4,6 +4,7 @@
 #Date: 2014-12-21
 #doingbusiness.preprocessing.sh
 . ./config.sh
+. ./common.sh
 
 files=../data/*.2*.csv;
 htmlFiles=../data/*.2*.html;
