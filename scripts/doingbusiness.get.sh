@@ -115,7 +115,7 @@ echo '<?xml version="1.0"?>
     xmlns:skos="http://www.w3.org/2004/02/skos/core#/"
     xmlns:opmw="http://www.opmw.org/ontology/"
     xmlns:sdmx-dimension="http://purl.org/linked-data/sdmx/2009/dimension#"
-    xmlns:opmo="http://openprovenance.org/model/opmo#">' >../data/config.rdf;
+    xmlns:opmo="http://openprovenance.org/model/opmo#">' > $metaConfig;
 
 date=`date +%Y%m%dT%H%M%S%Z`;
 
@@ -204,13 +204,13 @@ let "year+=$startYear+1";
 let "end+=$endYear+1"
  echo "<rdf:Description rdf:about=\"/config/start-year\">
         <sdmx-dimension:refPeriod>$year</sdmx-dimension:refPeriod>
-    </rdf:Description>\n" >> ../data/config.rdf;
+    </rdf:Description>\n" >> $metaConfig;
 
  echo "<rdf:Description rdf:about=\"/config/end-year\">
         <sdmx-dimension:refPeriod>$end</sdmx-dimension:refPeriod>
-    </rdf:Description>\n" >> ../data/config.rdf;
+    </rdf:Description>\n" >> $metaConfig;
     
-echo "</rdf:RDF>" >> ../data/config.rdf;
+echo "</rdf:RDF>" >> $metaConfig;
 
 #describe abstract workflow processes for the extraction
 
