@@ -5,18 +5,16 @@
 #Creates dsd file for Doing Business
 . ./config.sh
 
-path="../data/config.rdf";
-
 #grab the first year
-startDate=$(xpath -e "//rdf:Description[1]/sdmx-dimension:refPeriod/text()" $path);
+startDate=$(xpath -e "//rdf:Description[1]/sdmx-dimension:refPeriod/text()" $metaConfig);
 echo "First year = $startDate";
 
-if [ ! -f $path ]; then
-    >&2 echo "Error: the the following path and/or file does not exist: $path. Make sure to run previous workflow step first (doingbusiness.get.sh, doingbusiness.preprocessing.sh).";
+if [ ! -f $metaConfig ]; then
+    >&2 echo "Error: the the following path and/or file does not exist: $metaConfig. Make sure to run previous workflow step first (doingbusiness.get.sh, doingbusiness.preprocessing.sh).";
     exit 1;
 fi
 
-numberOfTopics=$(grep -c "Description rdf:about=" $path);
+numberOfTopics=$(grep -c "Description rdf:about=" $metaConfig);
 
 codeIndicators=();
 codeIndicatorLabels=();
@@ -26,12 +24,12 @@ index=0;
 for((i=0; i <= ${numberOfTopics}; i++));
 do
     let index+=1;
-    topic=$(xpath -e "//rdf:Description[$index]/dcterms:identifier/text()" $path);
+    topic=$(xpath -e "//rdf:Description[$index]/dcterms:identifier/text()" $metaConfig);
     if [ ! -z "$topic" ]; then
         codeIndicators+=($topic);
     fi
 
-    label=("$(xpath -e "//rdf:Description[$index]/dcterms:title/text()" $path)");
+    label=("$(xpath -e "//rdf:Description[$index]/dcterms:title/text()" $metaConfig)");
     if [ ! -z "$label" ]; then
         codeIndicatorLabels+=("$label");
     fi
