@@ -18,11 +18,9 @@ if [ ! -f $file ]; then
     exit 1;
 fi
 
-path="../data/config.rdf";
-
 #get starting and ending year
-currentYear=$(xpath -e "//rdf:Description[1]/sdmx-dimension:refPeriod/text()" $path);
-endYear=$(xpath -e "//rdf:Description[2]/sdmx-dimension:refPeriod/text()" $path);
+currentYear=$(xpath -e "//rdf:Description[1]/sdmx-dimension:refPeriod/text()" $metaConfig);
+endYear=$(xpath -e "//rdf:Description[2]/sdmx-dimension:refPeriod/text()" $metaConfig);
 
 #open rdf for more info
 sed "/<\/rdf:RDF>/d" ../data/config.rdf > temp.rdf;
