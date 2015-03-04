@@ -3,6 +3,7 @@
 #Author URL: http://renatostauffer.ch/
 #Date: 2014-12-21
 #Creates dsd file for Doing Business
+. ./config.sh
 
 path="../data/config.rdf";
 
