@@ -11,6 +11,7 @@ agent="http://renatostauffer.ch/#i";
 data="../data";
 namespace="http://$agency.270a.info";
 workflowConfig="../data/config.execution.rdf";
+metaConfig="../data/config.rdf";
 
 workflowTemplate="${namespace}/workflow";
 workflowAccount="${namespace}/account";
