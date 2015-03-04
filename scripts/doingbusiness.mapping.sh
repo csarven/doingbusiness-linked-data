@@ -30,7 +30,9 @@ do
 	filename=$(basename $file);
 	filename="${filename%.*}";
 	newname=`echo "$filename" | sed -e 's/tarql\.query\./mapped\./'`; 
-	helper=`echo "$filename" | sed -e 's/doingbusiness\.tarql\.query\.//' | sed 's/\./-/'`; 
+	helper=`echo "$filename" | sed -e 's/doingbusiness\.tarql\.query\.//' | sed 's/\./-/'`;
+
+	#do the mapping with tarql
 	tarql $file >> ../data/$newname.ttl;
 
 
@@ -41,6 +43,7 @@ do
 	if [ ! -z $artifact ]; then
 	account=$(xpath -e "//rdf:Description[1]/opmo:account/text()" $workflowConfig);
 	
+	#describe execution
 	echo "<$namespace/process/mapping/csv-rdf/$date>
 	a opmw:WorkflowExecutionProcess ;
 	opmw:correspondsToTemplateProcess <$workflowTemplate/mapping/csv-rdf> ;
@@ -50,6 +53,7 @@ do
 	.
 	" >> $workflowExecutionDescription;
 
+	#describe execution
 	echo "
 	<$namespace/data/$mappedData/$date>
 	a opmw:WorkflowExecutionArtifact ;
@@ -63,11 +67,13 @@ do
 fi
 done
 
+#describe abstract workflow
 echo "<$workflowTemplate/mapping/csv-rdf> a opmw:WorkflowTemplateProcess ;
 opmw:uses <$workflowTemplate/preprocessing/preprocessed-data> ;
 opmw:isStepOfTemplate <$workflowTemplate> ;
 ." >> $abstractWorkflowDescription;
 
+#describe abstract workflow
 echo "<$workflowTemplate/turtle-data>
 a opmw:WorkflowTemplateArtifact, opmw:DataVariable ;
 opmw:isGeneratedBy <$workflowTemplate/mapping/csv-rdf> ;
