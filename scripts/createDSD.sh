@@ -67,74 +67,13 @@ printf "\n" >> meta.ttl;
 #loop every indicator to create the DataStructureDefinition and the dataset
 arrayLength=${#codeIndicators[@]}
 
-for ((i=0; i<${arrayLength}; i++));
-do
-    echo "#" >> meta.ttl;
-    echo "# ${codeIndicatorLabels[$i]} dataset" >> meta.ttl;
-    echo "#" >> meta.ttl;
-    printf "\n" >> meta.ttl;
-
-    echo "dataset:${codeIndicators[$i]}
-    a qb:DataSet ;
-    qb:structure structure:${codeIndicators[$i]} ;
-    dcterms:title \"${codeIndicatorLabels[$i]}\"@en ;" >> meta.ttl;
-
-    if [ ${codeIndicators[$i]} != ease-of-doing-business ]
-        then
-            echo "    foaf:page <http://www.doingbusiness.org/data/exploretopics/${codeIndicators[$i]}> ;" >> meta.ttl;
-        fi
-
-    currentTime=`date --utc +%FT%TZ`;
-    echo '    dcterms:issued "'"$currentTime"'"^^xsd:dateTime ;
-    dcterms:creator
-        <http://renatostauffer.ch/#i> ,
-        <http://csarven.ca/#i> ;
-    dcterms:license '"${licence}"' ;
-    .'>> meta.ttl;
-
-    echo "
-structure:${codeIndicators[$i]}
-    a qb:DataStructureDefinition ;
-    qb:component component:rank ;" >> meta.ttl;
-
-    if [ ${codeIndicators[$i]} != ease-of-doing-business ]
-        then
-            echo "    qb:component component:dtf ;" >> meta.ttl;
-        fi
-    
-    echo "    qb:component component:economy ;
-    qb:component component:refPeriod ;
-    qb:component component:indicator-${codeIndicators[$i]} ;" >> meta.ttl;
-
-    if [ ${codeIndicators[$i]} != ease-of-doing-business ]
-    then
-        #Get the rest of the components from the csv header
-        componentsToLoop=$(head -n 1 ../data/${codeIndicators[$i]}.$startDate.preprocessed.csv | cut -d',' -f8- | sed 's/,/ /g');
-        components=();
-        components+=($componentsToLoop);
-
-        numberOfComponents=${#components[@]};
-
-        for ((j=0; j<${numberOfComponents}; j++));
-        do
-            echo "    qb:component component:${components[$j]} ;" >> meta.ttl;
-        done
-    else
-        echo "    qb:component component:oveall-dtf ;" >> meta.ttl;
-    fi
-
-    echo "." >> meta.ttl;
-    printf "\n" >> meta.ttl;
-
-    echo "code-indicator:${codeIndicators[$i]}
-    a skos:Concept ;
-    skos:inScheme code:indicator ;
-    skos:topConceptOf code:indicator ;
-    #TODO: Add definition
-    #skos:definition \"\"@en ;
-." >> meta.ttl;
-    printf "\n" >> meta.ttl;
-done
+    #take "random" file to map the ease-of-doing-business
+    indicatorFiles=doingbusiness.tarql.dsd.query.*
+    for file in $indicatorFiles
+    do
+        tarql $file > temp.ttl;
+        sed '/^@/ d' temp.ttl >> meta.ttl;
+    done
 
 #create the indicators
 echo "code:indicator
