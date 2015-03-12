@@ -123,7 +123,7 @@ if [ ${codeIndicators[$i]} != ease-of-doing-business ]
      then
 
     echo "}
-FROM <../data/${codeIndicators[$i]}.$startYear.transformable.csv>
+FROM <../data/${codeIndicators[$i]}.$startYear.mapping.csv>
 WHERE {
     BIND (REPLACE(?refArea, \"^ + | +$\", '') AS ?area)
     BIND (STR(\"$startYear\") AS ?period)
@@ -153,7 +153,7 @@ WHERE {
      else
 
     #take "random" file to map the ease-of-doing-business
-    indicatorFiles=../data/*.$startYear.transformable.csv
+    indicatorFiles=../data/*.$startYear.mapping.csv
     usedFile="";
     for file in $indicatorFiles
     do
