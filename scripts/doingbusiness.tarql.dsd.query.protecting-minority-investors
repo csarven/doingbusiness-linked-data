@@ -1,0 +1,72 @@
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
+PREFIX dcterms: <http://purl.org/dc/terms/> 
+PREFIX foaf: <http://xmlns.com/foaf/0.1/> 
+PREFIX qb: <http://purl.org/linked-data/cube#> 
+PREFIX sdmx: <http://purl.org/linked-data/sdmx#> 
+PREFIX sdmx-attribute: <http://purl.org/linked-data/sdmx/2009/attribute#> 
+PREFIX sdmx-code: <http://purl.org/linked-data/sdmx/2009/code#> 
+PREFIX sdmx-concept: <http://purl.org/linked-data/sdmx/2009/concept#> 
+PREFIX sdmx-dimension: <http://purl.org/linked-data/sdmx/2009/dimension#> 
+PREFIX sdmx-measure: <http://purl.org/linked-data/sdmx/2009/measure#> 
+PREFIX sdmx-metadata: <http://purl.org/linked-data/sdmx/2009/metadata#> 
+PREFIX doingbusiness: <http://doingbusiness.270a.info/> 
+PREFIX measure: <http://doingbusiness.270a.info/measure/> 
+PREFIX doingbusiness-dataset: <http://doingbusiness.270a.info/dataset/> 
+PREFIX doingbusiness-structure: <http://doingbusiness.270a.info/structure/> 
+PREFIX dataset: <http://doingbusiness.270a.info/dataset/>
+PREFIX structure: <http://doingbusiness.270a.info/structure/> 
+PREFIX component: <http://doingbusiness.270a.info/component/> 
+PREFIX dimension: <http://doingbusiness.270a.info/dimension/> 
+PREFIX concept: <http://doingbusiness.270a.info/concept/> 
+PREFIX concept-indicator: <http://doingbusiness.270a.info/concept/indicator/> 
+PREFIX code: <http://doingbusiness.270a.info/code/> 
+PREFIX code-indicator: <http://doingbusiness.270a.info/code/indicator/> 
+PREFIX economy: <http://doingbuinsess.270a.info/code/economy/>
+PREFIX component-dimension: <http://doingbusiness.270a.info/component/dimension/>
+PREFIX component-measure: <http://doingbusiness.270a.info/component/measure/> 
+PREFIX component-attribute: <http://doingbusiness.270a.info/component/attribute/>
+PREFIX component-dimension-indicator: <http://doingbusiness.270a.info/component/dimension/indicator/>
+
+CONSTRUCT{
+
+dataset:protecting-minority-investors
+    a qb:DataSet ;
+    qb:structure structure:protecting-minority-investors ;
+    dcterms:title "Protecting Minority Investors"@en ;
+    dcterms:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
+.
+
+structure:protecting-minority-investors
+    a qb:DataStructureDefinition ;
+    qb:component component:rank ;
+    qb:component component:dtf ;
+    qb:component component:economy ;
+    qb:component component:refPeriod ;
+    qb:component component:indicator-protecting-minority-investors ;
+    qb:component component:extent-of-disclosure-index ;
+    qb:component component:extent-of-director-liability-index ;
+    qb:component component:ease-of-shareholder-suits-index ;
+    qb:component component:extent-of-conflict-of-interest-regulation-index ;
+    qb:component component:extent-of-shareholder-rights-index ;
+    qb:component component:strength-of-governance-structure ;
+    qb:component component:extent-of-corporate-transparency-index ;
+    qb:component component:extent-of-shareholder-governance-index ;
+    qb:component component:strength-of-minority-investor-protection-index ;
+.
+
+code-indicator:protecting-minority-investors
+    a skos:Concept ;
+    skos:inScheme code:indicator ;
+    skos:topConceptOf code:indicator ;
+    skos:prefLabel "Protecting Minority Investors"@en ;
+    .
+    
+}
+FROM <../data/protecting-minority-investors.2004.mapping.csv>
+WHERE{
+
+}
+LIMIT 1
