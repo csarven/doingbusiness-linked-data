@@ -13,7 +13,7 @@ for file in $filesPreprocessed
 do
 	filename=$(basename $file);
 	filename="${filename%.*}";
-	newname=`echo "$filename" | sed -e 's/preprocessed/transformable/'`; 
+	newname=`echo "$filename" | sed -e 's/preprocessed/mapping/'`; 
 	head -n 1 $file | sed 's/-/_/g' > ../data/$newname.csv;
 	sed 1d $file >> ../data/$newname.csv;
 done
@@ -22,8 +22,8 @@ done
 . ./doingbusiness.create.tarql.sh
 
 #use tarql to map the data
-transformableFiles=./*tarql.query*.txt
-for file in $transformableFiles
+mappingFiles=./*tarql.query*.txt
+for file in $mappingFiles
 do
 	echo "Still mapping...";
 	echo "...";
