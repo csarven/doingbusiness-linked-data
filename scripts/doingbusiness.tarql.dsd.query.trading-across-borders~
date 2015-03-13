@@ -1,4 +1,3 @@
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
 PREFIX dcterms: <http://purl.org/dc/terms/> 
 PREFIX qb: <http://purl.org/linked-data/cube#> 
@@ -11,32 +10,39 @@ PREFIX economy: <http://doingbuinsess.270a.info/code/economy/>
 
 CONSTRUCT{
 
-dataset:dealing-with-construction-permits
+dataset:trading-across-borders
     a qb:DataSet ;
-    qb:structure structure:dealing-with-construction-permits ;
-    dcterms:title "Dealing with Construction Permits "@en ;
+    qb:structure structure:trading-across-borders ;
+    dcterms:title "Trading Across Borders"@en ;
     dcterms:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
 .
 
-structure:dealing-with-construction-permits
+structure:trading-across-borders
     a qb:DataStructureDefinition ;
     qb:component component:rank ;
     qb:component component:dtf ;
     qb:component component:economy ;
     qb:component component:refPeriod ;
-    qb:component component:indicator-dealing-with-construction-permits ;
-    qb:component component:procedures ;
-    qb:component component:days ;
-    qb:component component:cost-in-percent-of-warehouse-value ;
-    .
+    qb:component component:indicator-trading-across-borders ;
+    qb:component component:number-of-documents-to-export ;
+    qb:component component:days-to-export ;
+    qb:component component:cost-to-export-in-us-dollar-per-container ;
+    qb:component component:cost-to-export-in-deflated-us-dollar-per-container ;
+    qb:component component:number-of-documents-to-import ;
+    qb:component component:days-to-import ;
+    qb:component component:cost-to-import-in-us-dollar-per-container ;
+    qb:component component:cost-to-import-in-deflated-us-dollar-per-container ;
+.
 
-code-indicator:dealing-with-construction-permits
+code-indicator:trading-across-borders
     a skos:Concept ;
     skos:inScheme code:indicator ;
     skos:topConceptOf code:indicator ;
+    skos:prefLabel "Trading Across Borders"@en ;
     .
+    
 }
-FROM <../data/dealing-with-construction-permits.2004.mapping.csv>
+FROM <../data/trading-across-borders.2004.mapping.csv>
 WHERE{
 
 }

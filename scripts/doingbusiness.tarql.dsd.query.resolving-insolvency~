@@ -1,4 +1,3 @@
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
 PREFIX dcterms: <http://purl.org/dc/terms/> 
 PREFIX qb: <http://purl.org/linked-data/cube#> 
@@ -11,32 +10,40 @@ PREFIX economy: <http://doingbuinsess.270a.info/code/economy/>
 
 CONSTRUCT{
 
-dataset:dealing-with-construction-permits
+dataset:resolving-insolvency
     a qb:DataSet ;
-    qb:structure structure:dealing-with-construction-permits ;
-    dcterms:title "Dealing with Construction Permits "@en ;
+    qb:structure structure:resolving-insolvency ;
+    dcterms:title "Resolving Insolvency"@en ;
     dcterms:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
 .
 
-structure:dealing-with-construction-permits
+structure:resolving-insolvency
     a qb:DataStructureDefinition ;
     qb:component component:rank ;
     qb:component component:dtf ;
     qb:component component:economy ;
     qb:component component:refPeriod ;
-    qb:component component:indicator-dealing-with-construction-permits ;
-    qb:component component:procedures ;
-    qb:component component:days ;
-    qb:component component:cost-in-percent-of-warehouse-value ;
-    .
+    qb:component component:indicator-resolving-insolvency ;
+    qb:component component:years ;
+    qb:component component:cost-in-percent-of-estate ;
+    qb:component component:outcome ;
+    qb:component component:recovery-rate ;
+    qb:component component:commencement-of-proceedings-index ;
+    qb:component component:management-of-debtor-assets-index ;
+    qb:component component:reorganization-proceedings-index ;
+    qb:component component:creditor-participation-index ;
+    qb:component component:strength-of-insolvency-framework-index ;
+.
 
-code-indicator:dealing-with-construction-permits
+code-indicator:resolving-insolvency
     a skos:Concept ;
     skos:inScheme code:indicator ;
     skos:topConceptOf code:indicator ;
+    skos:prefLabel "Resolving Insolvency"@en ;
     .
+    
 }
-FROM <../data/dealing-with-construction-permits.2004.mapping.csv>
+FROM <../data/resolving-insolvency.2004.mapping.csv>
 WHERE{
 
 }

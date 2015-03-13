@@ -45,34 +45,18 @@ arrayLength=${#codeIndicators[@]}
 
 for ((i=0; i<${arrayLength}; i++)); do
 
-echo "prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+echo "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
-PREFIX dcterms: <http://purl.org/dc/terms/> 
-PREFIX foaf: <http://xmlns.com/foaf/0.1/> 
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX qb: <http://purl.org/linked-data/cube#> 
-PREFIX sdmx: <http://purl.org/linked-data/sdmx#> 
-PREFIX sdmx-attribute: <http://purl.org/linked-data/sdmx/2009/attribute#> 
-PREFIX sdmx-code: <http://purl.org/linked-data/sdmx/2009/code#> 
-PREFIX sdmx-concept: <http://purl.org/linked-data/sdmx/2009/concept#> 
-PREFIX sdmx-dimension: <http://purl.org/linked-data/sdmx/2009/dimension#> 
-PREFIX sdmx-measure: <http://purl.org/linked-data/sdmx/2009/measure#> 
-PREFIX sdmx-metadata: <http://purl.org/linked-data/sdmx/2009/metadata#> 
-PREFIX doingbusiness: <http://doingbusiness.270a.info/> 
 PREFIX measure: <http://doingbusiness.270a.info/measure/> 
-PREFIX doingbusiness-dataset: <http://doingbusiness.270a.info/dataset/> 
-PREFIX doingbusiness-structure: <http://doingbusiness.270a.info/structure/> 
 PREFIX dataset: <http://doingbusiness.270a.info/dataset/>
 PREFIX structure: <http://doingbusiness.270a.info/structure/> 
-PREFIX component: <http://doingbusiness.270a.info/component/> 
 PREFIX dimension: <http://doingbusiness.270a.info/dimension/> 
-PREFIX concept: <http://doingbusiness.270a.info/concept/> 
-PREFIX concept-indicator: <http://doingbusiness.270a.info/concept/indicator/> 
 PREFIX code: <http://doingbusiness.270a.info/code/> 
 PREFIX code-indicator: <http://doingbusiness.270a.info/code/indicator/> 
 PREFIX economy: <http://doingbuinsess.270a.info/code/economy/>
-
 " > doingbusiness.tarql.query.${codeIndicators[$i]}.$startYear.txt;
 
 echo "CONSTRUCT{" >> doingbusiness.tarql.query.${codeIndicators[$i]}.$startYear.txt;

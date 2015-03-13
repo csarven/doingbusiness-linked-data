@@ -40,25 +40,14 @@ echo "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix qb: <http://purl.org/linked-data/cube#> .
-@prefix sdmx: <http://purl.org/linked-data/sdmx#> .
-@prefix sdmx-attribute: <http://purl.org/linked-data/sdmx/2009/attribute#> .
-@prefix sdmx-code: <http://purl.org/linked-data/sdmx/2009/code#> .
-@prefix sdmx-concept: <http://purl.org/linked-data/sdmx/2009/concept#> .
 @prefix sdmx-dimension: <http://purl.org/linked-data/sdmx/2009/dimension#> .
-@prefix sdmx-measure: <http://purl.org/linked-data/sdmx/2009/measure#> .
-@prefix sdmx-metadata: <http://purl.org/linked-data/sdmx/2009/metadata#> .
-@prefix doingbusiness: <http://doingbusiness.270a.info/> .
 @prefix measure: <http://doingbusiness.270a.info/measure/> .
-@prefix doingbusiness-dataset: <http://doingbusiness.270a.info/dataset/> .
-@prefix doingbusiness-structure: <http://doingbusiness.270a.info/structure/> .
 @prefix dataset: <http://doingbusiness.270a.info/dataset/> .
 @prefix structure: <http://doingbusiness.270a.info/structure/> .
 @prefix component: <http://doingbusiness.270a.info/component/> .
 @prefix dimension: <http://doingbusiness.270a.info/dimension/> .
 @prefix concept: <http://doingbusiness.270a.info/concept/> .
-@prefix concept-indicator: <http://doingbusiness.270a.info/concept/indicator/> .
 @prefix code: <http://doingbusiness.270a.info/code/> .
 @prefix code-indicator: <http://doingbusiness.270a.info/code/indicator/> .
 @prefix economy: <http://doingbuinsess.270a.info/code/economy/> ." > meta.ttl;
