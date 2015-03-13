@@ -51,6 +51,6 @@ echo "<$workflowTemplate>
 . ./doingbusiness.preprocessing.sh
 . ./doingbusiness.mapping.sh
 
-#add end time of workflow execution
+#add end time 
  dateFormated=`date --utc +%FT%TZ`;
  sed -i "s/opmw:hasEndTime XXXENDTIMEXXX^^xsd:dateTime ;/opmw:hasEndTime \"$dateFormated\"^^xsd:dateTime ;/" $workflowExecutionDescription;
