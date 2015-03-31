@@ -1,0 +1,130 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
+PREFIX dcterms: <http://purl.org/dc/terms/> 
+PREFIX qb: <http://purl.org/linked-data/cube#> 
+PREFIX dataset: <http://doingbusiness.270a.info/dataset/>
+PREFIX structure: <http://doingbusiness.270a.info/structure/> 
+PREFIX component: <http://doingbusiness.270a.info/component/>  
+PREFIX code: <http://doingbusiness.270a.info/code/> 
+PREFIX code-indicator: <http://doingbusiness.270a.info/code/indicator/> 
+PREFIX economy: <http://doingbuinsess.270a.info/code/economy/>
+PREFIX measure: <http://doingbusiness.270a.info/measure/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+CONSTRUCT{
+
+component:rank
+    a qb:ComponentSpecification ;
+    qb:measure measure:rank ;
+    .
+
+measure:rank
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+component:dtf
+    a qb:ComponentSpecification ;
+    qb:measure measure:dtf ;
+    .
+
+measure:dtf
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+component:years
+    a qb:ComponentSpecification ;
+    qb:measure measure:years ;
+    .
+
+measure:years
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+component:cost-in-percent-of-estate
+    a qb:ComponentSpecification ;
+    qb:measure measure:cost-in-percent-of-estate ;
+    .
+
+measure:cost-in-percent-of-estate
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+component:outcome
+    a qb:ComponentSpecification ;
+    qb:measure measure:outcome ;
+    .
+
+measure:outcome
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+component:recovery-rate
+    a qb:ComponentSpecification ;
+    qb:measure measure:recovery-rate-cents-on-the-dollar ;
+    .
+
+measure:recovery-rate
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+component:commencement-of-proceedings-index
+    a qb:ComponentSpecification ;
+    qb:measure measure:commencement-of-proceedings-index ;
+    .
+
+measure:commencement-of-proceedings-index
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+component:management-of-debtors-assets-index
+    a qb:ComponentSpecification ;
+    qb:measure measure:management-of-debtors-assets-index ;
+    .
+
+measure:management-of-debtors-assets-index
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+component:reorganization-proceedings-index
+    a qb:ComponentSpecification ;
+    qb:measure measure:reorganization-proceedings-index ;
+    .
+
+measure:reorganization-proceedings-index
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+component:creditor-participation-index
+    a qb:ComponentSpecification ;
+    qb:measure measure:creditor-participation-index ;
+    .
+
+measure:creditor-participation-index
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+component:strength-of-insolvency-framework-index
+    a qb:ComponentSpecification ;
+    qb:measure measure:strength-of-insolvency-framework-index ;
+    .
+
+measure:strength-of-insolvency-framework-index
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+}
+FROM <../data/starting-a-business.2005.mapping.csv>
+WHERE{
+}
+LIMIT 1

@@ -1,0 +1,79 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
+PREFIX dcterms: <http://purl.org/dc/terms/> 
+PREFIX qb: <http://purl.org/linked-data/cube#> 
+PREFIX dataset: <http://doingbusiness.270a.info/dataset/>
+PREFIX structure: <http://doingbusiness.270a.info/structure/> 
+PREFIX component: <http://doingbusiness.270a.info/component/>  
+PREFIX code: <http://doingbusiness.270a.info/code/> 
+PREFIX code-indicator: <http://doingbusiness.270a.info/code/indicator/> 
+PREFIX economy: <http://doingbuinsess.270a.info/code/economy/>
+PREFIX measure: <http://doingbusiness.270a.info/measure/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+CONSTRUCT{
+
+component:rank
+    a qb:ComponentSpecification ;
+    qb:measure measure:rank ;
+    .
+
+measure:rank
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+component:dtf
+    a qb:ComponentSpecification ;
+    qb:measure measure:dtf ;
+    .
+
+measure:dtf
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+component:strength-of-legal-rights-index
+    a qb:ComponentSpecification ;
+    qb:measure measure:strength-of-legal-rights-index ;
+    .
+
+measure:strength-of-legal-rights-index
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+component:depth-of-credit-information-index
+    a qb:ComponentSpecification ;
+    qb:measure measure:depth-of-credit-information-index ;
+    .
+
+measure:depth-of-credit-information-index
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+component:credit-registry-coverage-in-percent-of-adults
+    a qb:ComponentSpecification ;
+    qb:measure measure:credit-registry-coverage-in-percent-of-adults ;
+    .
+
+measure:credit-registry-coverage-in-percent-of-adults
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+component:credit-bureau-coverage-in-percent-of-adults
+    a qb:ComponentSpecification ;
+    qb:measure measure:credit-bureau-coverage-in-percent-of-adults ;
+    .
+
+measure:credit-bureau-coverage-in-percent-of-adults
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+}
+FROM <../data/starting-a-business.2005.mapping.csv>
+WHERE{
+}
+LIMIT 1

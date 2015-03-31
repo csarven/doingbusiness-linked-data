@@ -1,0 +1,29 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
+PREFIX dcterms: <http://purl.org/dc/terms/> 
+PREFIX qb: <http://purl.org/linked-data/cube#> 
+PREFIX dataset: <http://doingbusiness.270a.info/dataset/>
+PREFIX structure: <http://doingbusiness.270a.info/structure/> 
+PREFIX component: <http://doingbusiness.270a.info/component/>  
+PREFIX code: <http://doingbusiness.270a.info/code/> 
+PREFIX code-indicator: <http://doingbusiness.270a.info/code/indicator/> 
+PREFIX economy: <http://doingbuinsess.270a.info/code/economy/>
+PREFIX measure: <http://doingbusiness.270a.info/measure/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+CONSTRUCT{
+
+component:economy
+    a qb:ComponentSpecification ;
+    qb:dimension sdmx-dimension:refArea ;
+        .
+
+component:refPeriod
+    a qb:ComponentSpecification ;
+    qb:dimension sdmx-dimension:refPeriod ;
+        .
+}
+FROM <../data/starting-a-business.2005.mapping.csv>
+WHERE{
+}
+LIMIT 1

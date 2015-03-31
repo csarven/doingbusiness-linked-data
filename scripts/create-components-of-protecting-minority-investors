@@ -1,0 +1,129 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
+PREFIX dcterms: <http://purl.org/dc/terms/> 
+PREFIX qb: <http://purl.org/linked-data/cube#> 
+PREFIX dataset: <http://doingbusiness.270a.info/dataset/>
+PREFIX structure: <http://doingbusiness.270a.info/structure/> 
+PREFIX component: <http://doingbusiness.270a.info/component/>  
+PREFIX code: <http://doingbusiness.270a.info/code/> 
+PREFIX code-indicator: <http://doingbusiness.270a.info/code/indicator/> 
+PREFIX economy: <http://doingbuinsess.270a.info/code/economy/>
+PREFIX measure: <http://doingbusiness.270a.info/measure/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+CONSTRUCT{
+component:rank
+    a qb:ComponentSpecification ;
+    qb:measure measure:rank ;
+    .
+
+measure:rank
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+component:dtf
+    a qb:ComponentSpecification ;
+    qb:measure measure:dtf ;
+    .
+
+measure:dtf
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+component:extent-of-disclosure-index
+    a qb:ComponentSpecification ;
+    qb:measure measure:extent-of-disclosure-index ;
+    .
+
+measure:extent-of-disclosure-index
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+component:extent-of-director-liability-index
+    a qb:ComponentSpecification ;
+    qb:measure measure:extent-of-director-liability-index ;
+    .
+
+measure:extent-of-director-liability-index
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+component:ease-of-shareholder-suits-index
+    a qb:ComponentSpecification ;
+    qb:measure measure:ease-of-shareholder-suits-index ;
+    .
+
+measure:ease-of-shareholder-suits-index
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+component:extent-of-conflict-of-interest-regulation-index
+    a qb:ComponentSpecification ;
+    qb:measure measure:extent-of-conflict-of-interest-regulation-index ;
+    .
+
+measure:extent-of-conflict-of-interest-regulation-index
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+component:extent-of-shareholder-rights-index
+    a qb:ComponentSpecification ;
+    qb:measure measure:extent-of-shareholder-rights-index ;
+    .
+
+measure:extent-of-shareholder-rights-index
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+component:strength-of-governance-structure-index
+    a qb:ComponentSpecification ;
+    qb:measure measure:strength-of-governance-structure-index ;
+    .
+
+measure:strength-of-governance-structure-index
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+component:extent-of-corporate-transparency-index
+    a qb:ComponentSpecification ;
+    qb:measure measure:extent-of-corporate-transparency-index ;
+    .
+
+measure:extent-of-corporate-transparency-index
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+component:extent-of-shareholder-governance-index
+    a qb:ComponentSpecification ;
+    qb:measure measure:extent-of-shareholder-governance-index ;
+    .
+
+measure:extent-of-shareholder-governance-index
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+component:strength-of-minority-investor-protection-index
+    a qb:ComponentSpecification ;
+    qb:measure measure:strength-of-minority-investor-protection-index ;
+    .
+
+measure:strength-of-minority-investor-protection-index
+    a qb:MeasureProperty ;
+    rdfs:label ""@en ;
+    .
+
+}
+FROM <../data/starting-a-business.2005.mapping.csv>
+WHERE{
+}
+LIMIT 1
