@@ -15,7 +15,7 @@ if [ ! -f $metaConfig ]; then
 fi
 
 numberOfTopics=$(grep -c "Description rdf:about=" $metaConfig);
-
+echo "$numberOfTopics number of topics!";
 codeIndicators=();
 codeIndicatorLabels=();
 licence="<http://creativecommons.org/publicdomain/zero/1.0/>";
@@ -35,36 +35,21 @@ do
     fi
 done
 
-echo "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix qb: <http://purl.org/linked-data/cube#> .
-@prefix sdmx-dimension: <http://purl.org/linked-data/sdmx/2009/dimension#> .
-@prefix measure: <http://doingbusiness.270a.info/measure/> .
-@prefix dataset: <http://doingbusiness.270a.info/dataset/> .
-@prefix structure: <http://doingbusiness.270a.info/structure/> .
-@prefix component: <http://doingbusiness.270a.info/component/> .
-@prefix dimension: <http://doingbusiness.270a.info/dimension/> .
-@prefix concept: <http://doingbusiness.270a.info/concept/> .
-@prefix code: <http://doingbusiness.270a.info/code/> .
-@prefix code-indicator: <http://doingbusiness.270a.info/code/indicator/> .
-@prefix economy: <http://doingbuinsess.270a.info/code/economy/> ." > meta.ttl;
-printf "\n" >> meta.ttl;
-
+echo "#Meta file" > meta.ttl;
 #loop every indicator to create the DataStructureDefinition and the dataset
 arrayLength=${#codeIndicators[@]}
 
-    #take "random" file to map the ease-of-doing-business
     indicatorFiles=doingbusiness.tarql.dsd.query.*
     for file in $indicatorFiles
     do
+        echo "Mapping $file";
         tarql $file > temp.ttl;
         sed '/^@/ d' temp.ttl >> meta.ttl;
     done
 
 #create the indicators
+echo "Creating indicators...";
+
 echo "code:indicator
     skos:prefLabel \"Indicator Concept Scheme\"@en ;
     skos:hasTopConcept" >> meta.ttl;
@@ -86,57 +71,30 @@ printf "\n" >> meta.ttl;
 #create the components for the indicators
 echo "Creating components for the indicators...";
 arrayLenght=${#codeIndicators[@]};
-
-indicatorsToLoop=();
 for((i=0; i < ${arrayLenght}; i++));
 do
-    if [ ${codeIndicators[$i]} == 'ease-of-doing-business' ];
-        then
-            echo "component:economy
-    a qb:ComponentSpecification ;
-    qb:dimension sdmx-dimension:refArea ;
-        .
-
-component:refPeriod
-    a qb:ComponentSpecification ;
-    qb:dimension sdmx-dimension:refPeriod ;
-        .
-    " >> meta.ttl;
-
-    if [ ! -f "../data/${codeIndicators[0]}.$startDate.preprocessed.csv" ]; then
-        >&2 echo "Error: the the following path and/or file does not exist: ../data/${codeIndicators[0]}.$startDate.preprocessed.csv. Make sure to run previous workflow step first (doingbusiness.get.sh, doingbusiness.preprocessing.sh).";
-        exit 1;
-    fi
-    
-    indicators=$(head -n 1 ../data/${codeIndicators[0]}.$startDate.preprocessed.csv | cut -d',' -f3-4 | sed 's/,/ /g');
-    indicatorsToLoop+=($indicators);
-        else
-                if [ ! -f "../data/${codeIndicators[0]}.$startDate.preprocessed.csv" ]; then
-                    >&2 echo "Error: the the following path and/or file does not exist: ../data/${codeIndicators[0]}.$startDate.preprocessed.csv. Make sure to run previous workflow step first (doingbusiness.get.sh, doingbusiness.preprocessing.sh).";
-                    exit 1;
-                fi
-                
-                indicators=$(head -n 1 ../data/${codeIndicators[$i]}.$startDate.preprocessed.csv | cut -d',' -f5- | sed 's/,/ /g');
-                indicatorsToLoop+=($indicators);
-    fi
+    tarql create-components-of-${codeIndicators[$i]} >> meta.ttl;
 done
 
-sortedUniqueIndicators+=($(echo "${indicatorsToLoop[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' '));
+tarql create-shared-components >> meta.ttl;
 
-sortedUniqueIndicatorsLength=${#sortedUniqueIndicators[@]};
+sed '/^@/ d' meta.ttl > temp.ttl;
 
-for ((i=0; i<${sortedUniqueIndicatorsLength}; i++));
-do
-    echo "component:${sortedUniqueIndicators[$i]}
-    a qb:ComponentSpecification ;
-    qb:measure measure:${sortedUniqueIndicators[$i]} ;
-    ." >> meta.ttl;
-    printf "\n" >> meta.ttl;
-
-    echo "measure:${sortedUniqueIndicators[$i]}
-    a qb:MeasureProperty ;
-    rdfs:label \"\"@en ;
-    #TODO: Add range
-    ." >> meta.ttl;
-    printf "\n" >> meta.ttl;
-done
+echo "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix qb: <http://purl.org/linked-data/cube#> .
+@prefix sdmx-dimension: <http://purl.org/linked-data/sdmx/2009/dimension#> .
+@prefix measure: <http://doingbusiness.270a.info/measure/> .
+@prefix dataset: <http://doingbusiness.270a.info/dataset/> .
+@prefix structure: <http://doingbusiness.270a.info/structure/> .
+@prefix component: <http://doingbusiness.270a.info/component/> .
+@prefix dimension: <http://doingbusiness.270a.info/dimension/> .
+@prefix concept: <http://doingbusiness.270a.info/concept/> .
+@prefix code: <http://doingbusiness.270a.info/code/> .
+@prefix code-indicator: <http://doingbusiness.270a.info/code/indicator/> .
+@prefix economy: <http://doingbuinsess.270a.info/code/economy/> ." > meta.ttl;
+printf "\n" >> meta.ttl;
+cat temp.ttl >> meta.ttl;
